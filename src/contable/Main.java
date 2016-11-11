@@ -40,6 +40,8 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        desktopPane.setBackground(new java.awt.Color(0, 51, 51));
+
         fileMenu.setMnemonic('f');
         fileMenu.setText("Alumno");
 
