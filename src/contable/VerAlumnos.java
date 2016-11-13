@@ -56,6 +56,7 @@ public class VerAlumnos extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);

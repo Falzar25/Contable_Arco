@@ -123,10 +123,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        Agregar_Alumnos agregar_Alumnos = new Agregar_Alumnos();
-        desktopPane.add(agregar_Alumnos);
-        agregar_Alumnos.setVisible(true);
-        
+        new Agregar_Alumnos(null, true).setVisible(true);        
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed

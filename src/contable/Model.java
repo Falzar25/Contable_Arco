@@ -16,12 +16,12 @@ public class Model {
     private static int periodoActual;
     private static int semestre;
 
-    public static int getSemestre() {
+    public int getSemestre() {
         return semestre;
     }
 
-    public static void setSemestre(int semestre) {
-        Model.semestre = semestre;
+    public  void setSemestre(int semestre) {
+        this.semestre = semestre;
     }
 
     public int getPeriodoActual() {

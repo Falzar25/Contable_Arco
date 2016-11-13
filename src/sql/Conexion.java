@@ -8,6 +8,8 @@ package sql;
 import contable.Model;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -99,6 +101,7 @@ public class Conexion {
 
         }
     }
+
     public void mostrarBusqueda(DefaultTableModel m, String s) {
 
         try {
@@ -133,10 +136,16 @@ public class Conexion {
         try {
 
             cmd = con.createStatement();
-            cmd.executeUpdate("INSERT INTO tbl_alumnos (idalumnos, nombrealumnos,"
-                    + "semestrealumnos) values(" + NC + " , '" + Name + "' , " + Semestre + ")");
-            cmd.executeUpdate("INSERT INTO tbl_saldo_total (idalumnos, saldo) values(" + NC + ",0)");
-            JOptionPane.showMessageDialog(null, "Alumno agregado correctamente", "Correcto", 1);
+            rs = cmd.executeQuery("select idalumnos from tbl_alumnos where idalumnos = " + NC + "");
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Ya hay un alumno con ese numero de control", "Error", 0);
+            } else {
+                cmd.executeUpdate("INSERT INTO tbl_alumnos (idalumnos, nombrealumnos,"
+                        + "semestrealumnos) values(" + NC + " , '" + Name + "' , " + Semestre + ")");
+                cmd.executeUpdate("INSERT INTO tbl_saldo_total (idalumnos, saldo) values(" + NC + ",0)");
+                JOptionPane.showMessageDialog(null, "Alumno agregado correctamente", "Correcto", 1);
+            }
+
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, e, "Error", 0);
@@ -161,12 +170,12 @@ public class Conexion {
         }
 
     }
-    
+
     public void eliminarAlumno(int NC) {
         try {
 
             cmd = con.createStatement();
-            cmd.executeUpdate("UPDATE tbl_alumnos set status = 0 where idalumnos = "+NC+"");
+            cmd.executeUpdate("UPDATE tbl_alumnos set status = 0 where idalumnos = " + NC + "");
             JOptionPane.showMessageDialog(null, "Alumno eliminado correctamente", "Correcto", 1);
         } catch (SQLException e) {
 
@@ -745,7 +754,7 @@ public class Conexion {
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+ap+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, ins_saldo FROM tbl_alumnos, tbl_inscripcion"
@@ -769,7 +778,7 @@ public class Conexion {
 
         }
     }
-    
+
     public void todosAlumnosBusqueda(DefaultTableModel m, String src) {
 
         try {
@@ -777,7 +786,7 @@ public class Conexion {
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("SELECT idalumnos, nombrealumnos, semestrealumnos FROM tbl_alumnos"
-                    + " where status=1 and (idalumnos = '"+src+"' or nombrealumnos LIKE '%"+src+"%') order by semestrealumnos");
+                    + " where status=1 and (idalumnos = '" + src + "' or nombrealumnos LIKE '%" + src + "%') order by semestrealumnos");
 
             while (rs.next()) {
                 Object list[] = new Object[4];

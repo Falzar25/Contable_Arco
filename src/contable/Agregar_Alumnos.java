@@ -12,7 +12,7 @@ import sql.Conexion;
  *
  * @author Equipo
  */
-public class Agregar_Alumnos extends javax.swing.JInternalFrame {
+public class Agregar_Alumnos extends javax.swing.JDialog {
 
     String name;
     int nc, semestre;
@@ -21,9 +21,12 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Agregar_Alumnos
      */
-    public Agregar_Alumnos() {
+    public Agregar_Alumnos(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
         c.conectar();
+
     }
 
     /**
@@ -44,10 +47,7 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconifiable(true);
-        setMaximizable(true);
         setTitle("Agregar un alumno");
 
         jLabel1.setText("Nombre:");
@@ -130,11 +130,16 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         try {
             name = txtName.getText();
-            nc = Integer.parseInt(txtNC.getText());
-            semestre = 1 + cbSemestre.getSelectedIndex();
-            txtName.setText("");
-            txtNC.setText("");
-            c.agregarAlumnos(nc, name, semestre);    
+            if (name.equals("")) {
+                throw new Exception();
+            } else {
+                nc = Integer.parseInt(txtNC.getText());
+                semestre = 1 + cbSemestre.getSelectedIndex();
+                txtName.setText("");
+                txtNC.setText("");
+                c.agregarAlumnos(nc, name, semestre);
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }
