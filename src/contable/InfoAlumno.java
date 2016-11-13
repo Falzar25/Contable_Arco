@@ -5,6 +5,8 @@
  */
 package contable;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
@@ -15,38 +17,55 @@ import sql.Conexion;
  */
 public class InfoAlumno extends javax.swing.JDialog {
 
-    
     String nocontrol, nombre, saldo, año;
-    DefaultTableModel mMeses,mAbono;
+    DefaultTableModel mMeses, mAbono;
+    Model m = new Model();
+    Conexion c = new Conexion();
+
     public InfoAlumno(java.awt.Frame parent, boolean modal) {
-        
-    //public InfoAlumno() {
+
+        //public InfoAlumno() {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
 
         setData();
-        
+        cbAños.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                año = cbAños.getSelectedItem().toString();
+                for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                    mMeses.removeRow(i);
+                    i -= 1;
+                }
+                for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                    mAbono.removeRow(i);
+                    i -= 1;
+                }
+                c.infoAlumnoTable(mMeses, Integer.parseInt(nocontrol), año);
+                c.infoAbonoTable_mensualidad(mAbono, Integer.parseInt(nocontrol), año);
+            }
+        });
     }
-    
-    final void setData(){
-        Model m = new Model();
-        Conexion c = new Conexion();
+
+    final void setData() {
+
         c.conectar();
         nocontrol = m.getNocontrol();
         nombre = m.getNombreAlumno();
         saldo = m.getSaldoAlumno();
         lblnocontrol.setText(nocontrol);
         lblNombre.setText(nombre);
-        lblSaldo.setText(saldo);     
+        lblSaldo.setText(saldo);
         mMeses = (DefaultTableModel) tblMeses.getModel();
         mAbono = (DefaultTableModel) tblAbonos.getModel();
         c.añosCB(cbAños);
         año = cbAños.getSelectedItem().toString();
         c.infoAlumnoTable(mMeses, Integer.parseInt(nocontrol), año);
         c.infoAbonoTable_mensualidad(mAbono, Integer.parseInt(nocontrol), año);
-        
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -213,16 +232,26 @@ public class InfoAlumno extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        
+
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        if (Integer.parseInt(saldo) == 0){
+        if (Integer.parseInt(saldo) == 0) {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
-        }else{
+        } else {
             new ProcesoAbono(null, true).setVisible(true);
+            for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                mMeses.removeRow(i);
+                i -= 1;
+            }
+            for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                mAbono.removeRow(i);
+                i -= 1;
+            }
+            c.infoAlumnoTable(mMeses, Integer.parseInt(nocontrol), año);
+            c.infoAbonoTable_mensualidad(mAbono, Integer.parseInt(nocontrol), año);
         }
-       
+
     }//GEN-LAST:event_btnAbonarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

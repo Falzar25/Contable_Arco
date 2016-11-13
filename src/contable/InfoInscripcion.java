@@ -222,6 +222,16 @@ public class InfoInscripcion extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
         } else {
             new AbonarIns(new Main(), true).setVisible(true);
+            for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                ipago.removeRow(i);
+                i -= 1;
+            }
+            for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                iAbono.removeRow(i);
+                i -= 1;
+            }
+            c.infoAlumnoTable_ins(ipago, Integer.parseInt(nocontrol), per);
+            c.infoAbonoTable_ins(iAbono, Integer.parseInt(nocontrol), per);
         }
 
     }//GEN-LAST:event_btnAbonarActionPerformed

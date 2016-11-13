@@ -13,6 +13,7 @@ import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -62,9 +63,16 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
                 con.mostrarExt(model, periodo);
             }
         });
+        
+        
 
     }
-
+    public void Limpiar(DefaultTableModel m, JTable jt) {
+        for (int i = 0; i < jt.getRowCount(); i++) {
+            m.removeRow(i);
+            i -= 1;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,6 +177,8 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new AsignarExt(new Main(), true).setVisible(true);
+        this.Limpiar(model, tblAlumnos);
+        con.mostrarExt(model, periodo);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

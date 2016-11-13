@@ -26,6 +26,7 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
     Model m = new Model();
     DefaultTableModel model;
     String nocontrol, nombre, saldo, periodo;
+
     public MainInscripcion() {
         initComponents();
         con.conectar();
@@ -37,13 +38,19 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (KeyEvent.VK_ENTER == e.getKeyCode()) {
-                    nocontrol=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
-                    nombre=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
-                    saldo=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
+                    nocontrol = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
+                    nombre = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
+                    saldo = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
                     m.setNocontrol(nocontrol);
                     m.setNombreAlumno(nombre);
                     m.setSaldoAlumno(saldo);
                     new InfoInscripcion(new Main(), true).setVisible(true);
+                    for (int i = 0; i < tblAlumnos.getRowCount(); i++) {
+                        model.removeRow(i);
+                        i -= 1;
+                    }
+                    con.mostrarTodoInscripcion(model, periodo);
+                    txtBuscar.setText("");
                 }
             }
         });
@@ -59,12 +66,14 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
             }
         });
     }
+
     public void Limpiar(DefaultTableModel m, JTable jt) {
         for (int i = 0; i < jt.getRowCount(); i++) {
             m.removeRow(i);
             i -= 1;
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -206,6 +215,9 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
 
     private void btnPutSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPutSaldoActionPerformed
         new AsignarPagosI(new Main(), true).setVisible(true);
+        this.Limpiar(model, tblAlumnos);
+        con.mostrarTodoInscripcion(model, periodo);
+        txtBuscar.setText("");
     }//GEN-LAST:event_btnPutSaldoActionPerformed
 
     private void btnRevertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevertirActionPerformed

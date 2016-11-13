@@ -33,23 +33,31 @@ public class MainForm extends javax.swing.JInternalFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (KeyEvent.VK_ENTER == e.getKeyCode()) {
-                    nocontrol=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
-                    nombre=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
-                    saldo=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
+                    nocontrol = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
+                    nombre = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
+                    saldo = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
                     m.setNocontrol(nocontrol);
                     m.setNombreAlumno(nombre);
                     m.setSaldoAlumno(saldo);
                     new InfoAlumno(new Main(), true).setVisible(true);
+                    for (int i = 0; i < tblAlumnos.getRowCount(); i++) {
+                        model.removeRow(i);
+                        i -= 1;
+                    }
+                    con.mostrarTodo(model);
+                    txtBuscar.setText("");
                 }
             }
         });
     }
+
     public void Limpiar(DefaultTableModel m, JTable jt) {
         for (int i = 0; i < jt.getRowCount(); i++) {
             m.removeRow(i);
             i -= 1;
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,7 +190,9 @@ public class MainForm extends javax.swing.JInternalFrame {
 
     private void btnPutSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPutSaldoActionPerformed
         new AsignarPagosM(new Main(), true).setVisible(true);
-        
+        this.Limpiar(model, tblAlumnos);
+        con.mostrarTodo(model);
+        txtBuscar.setText("");
     }//GEN-LAST:event_btnPutSaldoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -214,7 +224,7 @@ public class MainForm extends javax.swing.JInternalFrame {
             }
         });
     }
-    */
+     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

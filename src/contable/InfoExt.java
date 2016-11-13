@@ -237,6 +237,16 @@ public class InfoExt extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
         } else {
             new AbonarExt(null, true).setVisible(true);
+            for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                mpago.removeRow(i);
+                i -= 1;
+            }
+            for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                mAbono.removeRow(i);
+                i -= 1;
+            }
+            c.infoAlumnoTable_ext(mpago, Integer.parseInt(nocontrol), per);
+            c.infoAbonoTable_ext(mAbono, Integer.parseInt(nocontrol), per);
         }
     }//GEN-LAST:event_btnAbonarActionPerformed
 
