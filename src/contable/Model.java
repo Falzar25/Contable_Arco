@@ -13,6 +13,15 @@ public class Model {
     private static String nocontrol;
     private static String nombreAlumno;
     private static String saldoAlumno;
+    private static int periodoActual;
+
+    public int getPeriodoActual() {
+        return periodoActual;
+    }
+
+    public void setPeriodoActual(int periodoActual) {
+        Model.periodoActual = periodoActual;
+    }
     
     public String getSaldoAlumno() {
         return saldoAlumno;

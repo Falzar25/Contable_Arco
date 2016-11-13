@@ -6,6 +6,7 @@
 package contable;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -20,8 +21,7 @@ public class AsignarExt extends javax.swing.JDialog {
     /**
      * Creates new form AsignarExt
      */
-    public AsignarExt(java.awt.Frame parent, boolean modal) {
-    //public AsignarExt() {  
+    public AsignarExt(java.awt.Frame parent, boolean modal) { 
     super(parent, modal);
         initComponents();
                 setLocationRelativeTo(parent);
@@ -45,6 +45,7 @@ public class AsignarExt extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Seleccione los alumnos");
 
         tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -106,7 +107,12 @@ public class AsignarExt extends javax.swing.JDialog {
                     arr.add(model.getValueAt(x, 0));
                 }
             }
-        con.asignarExt(arr);
+        if (arr.isEmpty()){
+            JOptionPane.showMessageDialog(this, "No ha seleccionado ningun alumno");
+        }else{
+            con.asignarExt(arr);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

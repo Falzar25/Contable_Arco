@@ -6,6 +6,7 @@
 package contable;
 
 import java.awt.Frame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -18,22 +19,25 @@ public class InfoInscripcion extends javax.swing.JDialog {
     /**
      * Creates new form InfoInscripcion
      */
-    String nocontrol, nombre, saldo, per;
-    DefaultTableModel ipago,iAbono;
-    
+    String nocontrol, nombre, per;
+    int saldo;
+    DefaultTableModel ipago, iAbono;
+
     public InfoInscripcion(Frame parent, Boolean modal) {
         super(parent, modal);
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
 
         setData();
     }
-    final void setData(){
+
+    final void setData() {
         Model m = new Model();
         Conexion c = new Conexion();
         c.conectar();
         nocontrol = m.getNocontrol();
         nombre = m.getNombreAlumno();
+        saldo = Integer.parseInt(m.getSaldoAlumno());
         lblnocontrol.setText(nocontrol);
         lblNombre.setText(nombre);
         ipago = (DefaultTableModel) tblMeses.getModel();
@@ -42,8 +46,9 @@ public class InfoInscripcion extends javax.swing.JDialog {
         per = cbPeriodos.getSelectedItem().toString();
         c.infoAlumnoTable_ins(ipago, Integer.parseInt(nocontrol), per);
         c.infoAbonoTable_ins(iAbono, Integer.parseInt(nocontrol), per);
-        
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -195,7 +200,12 @@ public class InfoInscripcion extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        new AbonarIns(new Main(), true).setVisible(true);
+        if (saldo == 0) {
+            JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
+        } else {
+            new AbonarIns(new Main(), true).setVisible(true);
+        }
+
     }//GEN-LAST:event_btnAbonarActionPerformed
 
 

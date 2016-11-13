@@ -50,7 +50,6 @@ public class MainForm extends javax.swing.JInternalFrame {
             i -= 1;
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,7 +72,7 @@ public class MainForm extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Sistema Contable");
+        setTitle("Pagos mensuales");
 
         jLabel1.setText("Buscar:");
 

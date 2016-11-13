@@ -29,7 +29,6 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
      */
     public MainExtraordinario() {
         initComponents();
-       
         con.conectar();
         con.cbPeriodos(cbPeriodo);
         model = (DefaultTableModel) tblAlumnos.getModel();
@@ -72,6 +71,7 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Extraordinarios");
 
         tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -163,6 +163,8 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
         if (n == 0){
             con.cambiar_ext(valor);
+        }else{
+            
         }   
     }catch(Exception e){
         JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");

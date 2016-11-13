@@ -5,6 +5,7 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -68,9 +69,9 @@ public class InfoAlumno extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMeses = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        cbAños = new javax.swing.JComboBox<String>();
+        cbAños = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Informacion del alumno en mensualidades");
 
         tblAbonos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,7 +137,7 @@ public class InfoAlumno extends javax.swing.JDialog {
 
         jLabel4.setText("Buscar por año:");
 
-        cbAños.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbAños.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,7 +217,12 @@ public class InfoAlumno extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        new ProcesoAbono(null, true).setVisible(true);
+        if (Integer.parseInt(saldo) == 0){
+            JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
+        }else{
+            new ProcesoAbono(null, true).setVisible(true);
+        }
+       
     }//GEN-LAST:event_btnAbonarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

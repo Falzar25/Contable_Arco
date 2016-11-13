@@ -5,6 +5,7 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -25,7 +26,6 @@ public class InfoExt extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
                 setLocationRelativeTo(parent);
-
         setData();
     }
     
@@ -66,6 +66,8 @@ final void setData(){
         btnBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnAbonar = new javax.swing.JButton();
+
+        setTitle("Informacion del alumno en extraordinarios");
 
         tblMeses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,7 +213,11 @@ final void setData(){
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        new AbonarExt().setVisible(true);
+        if (Integer.parseInt(saldo) == 0){
+            JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
+        }else{
+            new AbonarExt(null, true).setVisible(true);
+        }
     }//GEN-LAST:event_btnAbonarActionPerformed
 
 

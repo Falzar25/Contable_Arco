@@ -1,20 +1,23 @@
 /*
- *La madre de team viewer me estorba, chinga
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package contable;
-
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
+import sql.Conexion;
 
 /**
  *
  * @author g04rtx
  */
 public class Main extends javax.swing.JFrame {
-    
+    Conexion con = new Conexion();
+    Model m = new Model();
     public Main() {
         initComponents();
         setLocationRelativeTo(null);
+        con.conectar();
+        con.periodoActual();
     }
     
     public static int count = 0;
@@ -37,7 +40,6 @@ public class Main extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Se prendió esta vaina");
 
         desktopPane.setBackground(new java.awt.Color(0, 51, 51));
 

@@ -7,6 +7,7 @@ package contable;
 
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -15,17 +16,18 @@ import sql.Conexion;
  * @author Falzar
  */
 public class AsignarPagosM extends javax.swing.JDialog {
-    String array_meses[] = {"Enero", "Febrero", "Marzo", "Abril","Mayo"
-    ,"Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+    int year=0, cantidad=0;
+    String mes;
+    String array_meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
     DefaultTableModel m;
     Conexion con = new Conexion();
-    
+
     public AsignarPagosM(java.awt.Frame parent, boolean modal) {
-    //public AsignarPagosM() {
-      
-  super(parent, modal);
+        //public AsignarPagosM() {
+
+        super(parent, modal);
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
 
         m = (DefaultTableModel) tblAll.getModel();
         con.conectar();
@@ -220,39 +222,44 @@ public class AsignarPagosM extends javax.swing.JDialog {
     }//GEN-LAST:event_rbListaActionPerformed
 
     private void isSelectedAlumno(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_isSelectedAlumno
-        if(evt.getStateChange() == 1){
-           tblAll.setVisible(false);
-           txtNC.enable();
+        if (evt.getStateChange() == 1) {
+            tblAll.setVisible(false);
+            txtNC.enable();
         }
     }//GEN-LAST:event_isSelectedAlumno
 
     private void isSelectedTable(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_isSelectedTable
-        if(evt.getStateChange() == 1){
-           tblAll.setVisible(true);
-           txtNC.setText("");
-           txtNC.disable();
+        if (evt.getStateChange() == 1) {
+            tblAll.setVisible(true);
+            txtNC.setText("");
+            txtNC.disable();
         }
     }//GEN-LAST:event_isSelectedTable
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-        String mes = cbMes.getSelectedItem().toString();
-        String year = lblYear.getText();
-        if(rbAlumno.isSelected()){
-            
-            con.AsignarPagosM_Alumno(Integer.parseInt(txtNC.getText()), cantidad, mes, year);
-        
-        } else if (rbLista.isSelected()){
-            
-            ArrayList <Object> arr = new ArrayList();
-            for (int x = 0; x<m.getRowCount(); x++){
-                if((Boolean)m.getValueAt(x, 3)==true){
-                    arr.add(m.getValueAt(x, 0));
+        try {
+            cantidad = Integer.parseInt(txtCantidad.getText());
+            mes = cbMes.getSelectedItem().toString();
+            year = Integer.parseInt(lblYear.getText());
+            if (rbAlumno.isSelected()) {
+
+                con.AsignarPagosM_Alumno(Integer.parseInt(txtNC.getText()), cantidad, mes, year);
+
+            } else if (rbLista.isSelected()) {
+
+                ArrayList<Object> arr = new ArrayList();
+                for (int x = 0; x < m.getRowCount(); x++) {
+                    if ((Boolean) m.getValueAt(x, 3) == true) {
+                        arr.add(m.getValueAt(x, 0));
+                    }
                 }
+                con.AsignarPagosM_Tabla(arr, cantidad, mes, year);
+
             }
-            con.AsignarPagosM_Tabla(arr, cantidad, mes, year);
-        
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -5,6 +5,7 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
@@ -12,7 +13,8 @@ import sql.Conexion;
  * @author Equipo
  */
 public class ProcesoAbono extends javax.swing.JDialog {
-    String nocontrol, abono, mes, año, ref;
+    String nocontrol, mes, ref;
+    int abono, año;
     Conexion c = new Conexion();
     /**
      * Creates new form procesoAbono
@@ -41,11 +43,12 @@ public class ProcesoAbono extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        cbMes = new javax.swing.JComboBox<String>();
-        cbAño = new javax.swing.JComboBox<String>();
+        cbMes = new javax.swing.JComboBox<>();
+        cbAño = new javax.swing.JComboBox<>();
         prueba = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Abonar las mensualidades");
 
         jLabel5.setText("¿Cuanto se abonó?:");
 
@@ -64,9 +67,9 @@ public class ProcesoAbono extends javax.swing.JDialog {
 
         jLabel3.setText("Seleccione el año:");
 
-        cbMes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cbAño.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbAño.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,11 +135,18 @@ public class ProcesoAbono extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        abono = txtAbono.getText();
-        mes = cbMes.getSelectedItem().toString();
-        año = cbAño.getSelectedItem().toString();
-        ref = txtRef.getText();
-        c.Abonar(abono, año, mes, ref, Integer.parseInt(nocontrol));
+        try {
+            abono = Integer.parseInt(txtAbono.getText());
+            mes = cbMes.getSelectedItem().toString();
+            año = Integer.parseInt(cbAño.getSelectedItem().toString());
+            ref = txtRef.getText();
+            c.Abonar(abono, año, mes, ref, Integer.parseInt(nocontrol));
+            this.dispose();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
+        }
+        
     }//GEN-LAST:event_btnAbonarActionPerformed
 
 

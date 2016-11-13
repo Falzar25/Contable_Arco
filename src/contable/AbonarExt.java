@@ -5,23 +5,24 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
  *
  * @author Equipo
  */
-public class AbonarExt extends javax.swing.JInternalFrame {
-    String nocontrol, abono, ref, desc;
+public class AbonarExt extends javax.swing.JDialog {
+    String nocontrol, ref, desc;
+    int abono;
     Conexion c = new Conexion();
     /**
      * Creates new form AbonarExt
      */
-    //public AbonarExt(java.awt.Frame parent, boolean modal) {
-    public AbonarExt() {
-      
-//  super(parent, modal);
+    public AbonarExt(java.awt.Frame parent, boolean modal) {  
+        super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
         Model m = new Model();
         c.conectar();
         c.cbPeriodos(cbPeriodo);
@@ -46,7 +47,7 @@ public class AbonarExt extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         cbPeriodo = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Abonar a extraordinarios");
 
         jLabel1.setText("Por favor inserte la referencia:");
 
@@ -117,16 +118,19 @@ public class AbonarExt extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbonar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonar2ActionPerformed
-        abono = txtAbono.getText();
-        ref = txtRef.getText();
-        desc = cbPeriodo.getSelectedItem().toString();
-        c.AbonarExt(abono, ref, Integer.parseInt(nocontrol), desc);
+        try {    
+            abono = Integer.parseInt(txtAbono.getText());
+            ref = txtRef.getText();
+            desc = cbPeriodo.getSelectedItem().toString();
+            c.AbonarExt(abono, ref, Integer.parseInt(nocontrol), desc);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
+        }
     }//GEN-LAST:event_btnAbonar2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAbonar;
-    private javax.swing.JButton btnAbonar1;
     private javax.swing.JButton btnAbonar2;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox<String> cbPeriodo;

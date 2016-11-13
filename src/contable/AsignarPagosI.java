@@ -8,6 +8,7 @@ package contable;
 import java.awt.Frame;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -17,13 +18,14 @@ import sql.Conexion;
  */
 public class AsignarPagosI extends javax.swing.JDialog {
 
-    
     DefaultTableModel m;
     Conexion con = new Conexion();
+    int cantidad;
+
     public AsignarPagosI(Frame parent, Boolean modal) {
         super(parent, modal);
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
 
         m = (DefaultTableModel) tblAll.getModel();
         con.conectar();
@@ -179,22 +181,30 @@ public class AsignarPagosI extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-        if(rbAlumno.isSelected()){
+        try {
+            cantidad = Integer.parseInt(txtCantidad.getText());
+            if (rbAlumno.isSelected()) {
 
-            con.AsignarPagosI_Alumno(Integer.parseInt(txtNC.getText()), cantidad);
+                con.AsignarPagosI_Alumno(Integer.parseInt(txtNC.getText()), cantidad);
 
-        } else if (rbLista.isSelected()){
+            } else if (rbLista.isSelected()) {
 
-            ArrayList <Object> arr = new ArrayList();
-            for (int x = 0; x<m.getRowCount(); x++){
-                if((Boolean)m.getValueAt(x, 3)==true){
-                    arr.add(m.getValueAt(x, 0));
+                ArrayList<Object> arr = new ArrayList();
+                for (int x = 0; x < m.getRowCount(); x++) {
+                    if ((Boolean) m.getValueAt(x, 3) == true) {
+                        arr.add(m.getValueAt(x, 0));
+                    }
+                }
+                if (arr.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor seleccione alumnos", "Error", 0);
+                } else {
+                    con.AsignarPagosI_Tabla(arr, cantidad);
                 }
             }
-            con.AsignarPagosI_Tabla(arr, cantidad);
-
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -202,7 +212,7 @@ public class AsignarPagosI extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void rbListaisSelectedTable(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbListaisSelectedTable
-        if(evt.getStateChange() == 1){
+        if (evt.getStateChange() == 1) {
             tblAll.setVisible(true);
             txtNC.setText("");
             txtNC.disable();
@@ -214,7 +224,7 @@ public class AsignarPagosI extends javax.swing.JDialog {
     }//GEN-LAST:event_rbListaActionPerformed
 
     private void rbAlumnoisSelectedAlumno(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbAlumnoisSelectedAlumno
-        if(evt.getStateChange() == 1){
+        if (evt.getStateChange() == 1) {
             tblAll.setVisible(false);
             txtNC.enable();
         }

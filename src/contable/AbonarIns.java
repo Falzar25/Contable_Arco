@@ -1,18 +1,20 @@
-
 package contable;
 
 import java.awt.Frame;
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 public class AbonarIns extends javax.swing.JDialog {
-    String nocontrol, abono, ref, desc;
+
+    String nocontrol, ref, desc;
+    int abono;
     Conexion c = new Conexion();
-    
+
     public AbonarIns(Frame parent, Boolean modal) {
         super(parent, modal);
         System.out.println("Si");
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
 
         Model m = new Model();
         c.conectar();
@@ -32,6 +34,8 @@ public class AbonarIns extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         btnAbonar2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+
+        setTitle("Abonar Inscripciones");
 
         jLabel5.setText("¿Cuanto se abonó?:");
 
@@ -102,10 +106,15 @@ public class AbonarIns extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbonar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonar2ActionPerformed
-        abono = txtAbono.getText();
-        ref = txtRef.getText();
-        desc = cbPeriodo.getSelectedItem().toString();
-        c.AbonarIns(abono, ref, Integer.parseInt(nocontrol), desc);
+        try {
+            abono = Integer.parseInt(txtAbono.getText());
+            ref = txtRef.getText();
+            desc = cbPeriodo.getSelectedItem().toString();
+            c.AbonarIns(abono, ref, Integer.parseInt(nocontrol), desc);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
+        }
+
     }//GEN-LAST:event_btnAbonar2ActionPerformed
 
 
