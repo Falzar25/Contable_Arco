@@ -111,6 +111,7 @@ public class AsignarExt extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "No ha seleccionado ningun alumno");
         }else{
             con.asignarExt(arr);
+            this.dispose();
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed

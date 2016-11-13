@@ -289,7 +289,7 @@ public class Conexion {
     public void Abonar(int ab, int añ, String ms, String ref, int id) {
 
         String idpm = "";
-        int deuda=0;
+        int deuda = 0;
         try {
 
             cmd = con.createStatement();
@@ -499,7 +499,7 @@ public class Conexion {
         try {
             cmd = con.createStatement();
             cmd.executeUpdate("UPDATE tbl_valor_ext set valor_ext=" + v + " where id_valor=1");
-
+            JOptionPane.showMessageDialog(null, "Valor actualizado", "Valor del extraordinario", 1);
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, e, "Error", 0);
@@ -570,15 +570,22 @@ public class Conexion {
             rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
-            rs = cmd.executeQuery("select idtbl_extraordinarios from tbl_extraordinarios where "
+            rs = cmd.executeQuery("select idtbl_extraordinarios, saldo_ext from tbl_extraordinarios where "
                     + "idalumnos = " + id + " and idperiodo = " + idper + "");
             rs.next();
             int idext = rs.getInt("idtbl_extraordinarios");
-            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                    + "('" + idext + "', 2, '" + ab + "', now(), '" + ref + "') ");
-            cmd.executeUpdate("UPDATE tbl_extraordinarios set pago_ext = (pago_ext +'" + ab + "'), saldo_ext= (saldo_ext-'" + ab + "') where"
-                    + " idtbl_extraordinarios ='" + idext + "'");
-            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a extraordinarios", 1);
+            int deuda = rs.getInt("saldo_ext");
+            if (deuda - ab < 0) {
+                JOptionPane.showMessageDialog(null, "Abono mayor que la deuda, por favor introduzca una cantidad correcta", "Error", 0);
+
+            } else {
+                cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
+                        + "('" + idext + "', 2, '" + ab + "', now(), '" + ref + "') ");
+                cmd.executeUpdate("UPDATE tbl_extraordinarios set pago_ext = (pago_ext +'" + ab + "'), saldo_ext= (saldo_ext-'" + ab + "') where"
+                        + " idtbl_extraordinarios ='" + idext + "'");
+                JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a extraordinarios", 1);
+            }
+
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, e, "Error", 0);
@@ -739,15 +746,21 @@ public class Conexion {
             rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
-            rs = cmd.executeQuery("select idinscripcion from tbl_inscripcion where "
+            rs = cmd.executeQuery("select idinscripcion, ins_saldo from tbl_inscripcion where "
                     + "idalumnos = " + id + " and idperiodo = " + idper + "");
             rs.next();
             int idins = rs.getInt("idinscripcion");
-            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                    + "('" + idins + "', 3, '" + ab + "', now(), '" + ref + "') ");
-            cmd.executeUpdate("UPDATE tbl_inscripcion set ins_pago = (ins_pago +'" + ab + "'), ins_saldo= (ins_saldo-'" + ab + "') where"
-                    + " idinscripcion ='" + idins + "'");
-            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a Inscripciones", 1);
+            int deuda = rs.getInt("ins_saldo");
+            if (deuda - ab < 0) {
+                JOptionPane.showMessageDialog(null, "Abono mayor que la deuda, por favor introduzca una cantidad correcta", "Error", 0);
+            } else {
+                cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
+                        + "('" + idins + "', 3, '" + ab + "', now(), '" + ref + "') ");
+                cmd.executeUpdate("UPDATE tbl_inscripcion set ins_pago = (ins_pago +'" + ab + "'), ins_saldo= (ins_saldo-'" + ab + "') where"
+                        + " idinscripcion ='" + idins + "'");
+                JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a Inscripciones", 1);
+            }
+
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, e, "Error", 0);

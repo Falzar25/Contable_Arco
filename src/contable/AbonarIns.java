@@ -111,6 +111,7 @@ public class AbonarIns extends javax.swing.JDialog {
             ref = txtRef.getText();
             desc = cbPeriodo.getSelectedItem().toString();
             c.AbonarIns(abono, ref, Integer.parseInt(nocontrol), desc);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }

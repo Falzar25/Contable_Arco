@@ -49,6 +49,11 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
                     m.setNombreAlumno(nombre);
                     m.setSaldoAlumno(saldo);
                     new InfoExt(new Main(), true).setVisible(true);
+                    for (int i = 0; i < tblAlumnos.getRowCount(); i++) {
+                        model.removeRow(i);
+                        i -= 1;
+                    }
+                    con.mostrarExt(model, periodo);
                 }
             }
         });
@@ -63,16 +68,16 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
                 con.mostrarExt(model, periodo);
             }
         });
-        
-        
 
     }
+
     public void Limpiar(DefaultTableModel m, JTable jt) {
         for (int i = 0; i < jt.getRowCount(); i++) {
             m.removeRow(i);
             i -= 1;
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,11 +190,14 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         try {
             String s = (String) JOptionPane.showInputDialog(this, "Seleccione un nuevo valor para los extraordinarios", "Seleccione un precio", 1);
             int valor = Integer.parseInt(s);
-            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
-            if (n == 0) {
-                con.cambiar_ext(valor);
+            if (valor <= 0) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese un valor mayor que 0");
             } else {
 
+                int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
+                if (n == 0) {
+                    con.cambiar_ext(valor);
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");

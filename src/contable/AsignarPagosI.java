@@ -201,6 +201,7 @@ public class AsignarPagosI extends javax.swing.JDialog {
                     con.AsignarPagosI_Tabla(arr, cantidad);
                 }
             }
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }
