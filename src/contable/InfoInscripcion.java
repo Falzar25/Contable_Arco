@@ -6,6 +6,8 @@
 package contable;
 
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
@@ -22,6 +24,8 @@ public class InfoInscripcion extends javax.swing.JDialog {
     String nocontrol, nombre, per;
     int saldo;
     DefaultTableModel ipago, iAbono;
+    Model m = new Model();
+    Conexion c = new Conexion();
 
     public InfoInscripcion(Frame parent, Boolean modal) {
         super(parent, modal);
@@ -29,11 +33,25 @@ public class InfoInscripcion extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
 
         setData();
+        cbPeriodos.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                per = cbPeriodos.getSelectedItem().toString();
+                for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                    ipago.removeRow(i);
+                    i -= 1;
+                }
+                for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                    iAbono.removeRow(i);
+                    i -= 1;
+                }
+                c.infoAlumnoTable_ins(ipago, Integer.parseInt(nocontrol), per);
+                c.infoAbonoTable_ins(iAbono, Integer.parseInt(nocontrol), per);
+            }
+        });
     }
 
     final void setData() {
-        Model m = new Model();
-        Conexion c = new Conexion();
         c.conectar();
         nocontrol = m.getNocontrol();
         nombre = m.getNombreAlumno();

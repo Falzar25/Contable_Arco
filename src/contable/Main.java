@@ -130,9 +130,9 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        Editar_Alumnos editar_Alumnos = new Editar_Alumnos();
-        desktopPane.add(editar_Alumnos);
-        editar_Alumnos.setVisible(true);
+        VerAlumnos ver_alumnos = new VerAlumnos();
+        desktopPane.add(ver_alumnos);
+        ver_alumnos.setVisible(true);
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed

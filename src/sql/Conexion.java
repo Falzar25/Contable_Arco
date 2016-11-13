@@ -17,12 +17,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Equipo
  */
 public class Conexion {
+
     Model m = new Model();
     Connection con = null;
     ResultSet rs = null;
     Statement cmd = null;
     static int periodo = 0;
     int idper = 0;
+
     public void conectar() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -45,7 +47,6 @@ public class Conexion {
     }
 
     public void mostrarTodo(DefaultTableModel m) {
-
 
         try {
 
@@ -71,7 +72,7 @@ public class Conexion {
 
         }
     }
-    
+
     public void todosAlumnos(DefaultTableModel m) {
 
         try {
@@ -133,49 +134,63 @@ public class Conexion {
 
             cmd = con.createStatement();
             cmd.executeUpdate("INSERT INTO tbl_alumnos (idalumnos, nombrealumnos,"
-                    + "semestrealumnos) values("+NC+" , '"+Name+"' , "+Semestre+")");
-            cmd.executeUpdate("INSERT INTO tbl_alumnos (idalumnos, saldo) values("+NC+",0)");
+                    + "semestrealumnos) values(" + NC + " , '" + Name + "' , " + Semestre + ")");
+            cmd.executeUpdate("INSERT INTO tbl_saldo_total (idalumnos, saldo) values(" + NC + ",0)");
+            JOptionPane.showMessageDialog(null, "Alumno agregado correctamente", "Correcto", 1);
+        } catch (SQLException e) {
 
-        } catch(SQLException e){
-            
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-            
+
         }
 
     }
-    
+
     public void editarAlumno(int EXNC, int NC, String Name, int Semestre) {
         try {
 
             cmd = con.createStatement();
-            cmd.executeUpdate("UPDATE tbl_alumnos SET idalumnos = '"+NC+"',"
-                    + "nombrealumnos = '"+Name+"',"
-                    + " semestrealumnos = '"+Semestre+"' WHERE "+EXNC+" = idalumnos");
-            JOptionPane.showMessageDialog(null, "Alumno agregado correctamente", "Correcto", 4);
+            cmd.executeUpdate("UPDATE tbl_alumnos SET idalumnos = '" + NC + "',"
+                    + "nombrealumnos = '" + Name + "',"
+                    + " semestrealumnos = '" + Semestre + "' WHERE " + EXNC + " = idalumnos");
+            JOptionPane.showMessageDialog(null, "Alumno editado correctamente", "Correcto", 1);
 
-        } catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-            
+
         }
 
     }
     
-    public void mesesCB(JComboBox cb, int id){
+    public void eliminarAlumno(int NC) {
+        try {
+
+            cmd = con.createStatement();
+            cmd.executeUpdate("UPDATE tbl_alumnos set status = 0 where idalumnos = "+NC+"");
+            JOptionPane.showMessageDialog(null, "Alumno eliminado correctamente", "Correcto", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+
+    }
+
+    public void mesesCB(JComboBox cb, int id) {
 
         try {
 
             cmd = con.createStatement();
 
-            rs = cmd.executeQuery("select distinct pmMes from tbl_pagos_meses where idalumnos = '"+id+"' and pmDeuda != 0");
-                    
+            rs = cmd.executeQuery("select distinct pmMes from tbl_pagos_meses where idalumnos = '" + id + "' and pmDeuda != 0");
+
             cb.removeAllItems();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 cb.addItem(rs.getString("pmMes"));
-            
+
             }
-            
+
             rs.close();
 
         } catch (SQLException ex) {
@@ -184,22 +199,22 @@ public class Conexion {
 
         }
     }
-    
-    public void añosCB(JComboBox cb){
+
+    public void añosCB(JComboBox cb) {
 
         try {
 
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("SELECT pmAño as pa from tbl_pagos_meses group by pmAño");
-                    
+
             cb.removeAllItems();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 cb.addItem(rs.getString("pa"));
-            
+
             }
-            
+
             rs.close();
 
         } catch (SQLException ex) {
@@ -208,15 +223,15 @@ public class Conexion {
 
         }
     }
-    
-    public void infoAlumnoTable(DefaultTableModel m, int id, String año){
+
+    public void infoAlumnoTable(DefaultTableModel m, int id, String año) {
 
         try {
 
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("Select pmMes, pmDeuda, pmPago from tbl_pagos_meses where idalumnos ='"
-            +id+"' and pmAño = '"+año+"'");
+                    + id + "' and pmAño = '" + año + "'");
 
             while (rs.next()) {
                 Object list[] = new Object[3];
@@ -234,15 +249,15 @@ public class Conexion {
 
         }
     }
-    
-    public void infoAbonoTable_mensualidad(DefaultTableModel m, int id, String año){
+
+    public void infoAbonoTable_mensualidad(DefaultTableModel m, int id, String año) {
 
         try {
 
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("select fecha, cantidad, pmMes, ref from tbl_abonos, tbl_pagos_meses where tbl_abonos.iddeuda "
-                    + "= tbl_pagos_meses.idpm and pmAño ='"+año+"' and idalumnos='"+id+"' and tipo_pago=1");
+                    + "= tbl_pagos_meses.idpm and pmAño ='" + año + "' and idalumnos='" + id + "' and tipo_pago=1");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -261,81 +276,81 @@ public class Conexion {
 
         }
     }
-    
-        public void Abonar (int ab, int añ, String ms, String ref, int id){
 
-            String idpm = "";
-            try {
+    public void Abonar(int ab, int añ, String ms, String ref, int id) {
 
-                cmd = con.createStatement();
+        String idpm = "";
+        try {
 
-                rs = cmd.executeQuery("select idpm from tbl_pagos_meses where pmMes= "
-                        + "'"+ms+"' and pmAño = '"+añ+"' and idalumnos = '"+id+"'");
-                while (rs.next()){
+            cmd = con.createStatement();
 
-                    idpm = rs.getString("idpm");
+            rs = cmd.executeQuery("select idpm from tbl_pagos_meses where pmMes= "
+                    + "'" + ms + "' and pmAño = '" + añ + "' and idalumnos = '" + id + "'");
+            while (rs.next()) {
 
-                }
-                cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                        + "('"+idpm+"', 1, '"+ab+"', now(), '"+ref+"') ");
-                cmd.executeUpdate("UPDATE tbl_pagos_meses set pmPago = (pmPago +'"+ab+"'), pmDeuda= (pmDeuda-'"+ab+"') where"
-                        + " idpm ='"+idpm+"'");
-                cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo - '"+ab+"') where idalumnos = '"+id+"'");
-                JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono", 1);
-            } catch(SQLException e){
-
-                JOptionPane.showMessageDialog(null, e, "Error", 0);
+                idpm = rs.getString("idpm");
 
             }
+            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
+                    + "('" + idpm + "', 1, '" + ab + "', now(), '" + ref + "') ");
+            cmd.executeUpdate("UPDATE tbl_pagos_meses set pmPago = (pmPago +'" + ab + "'), pmDeuda= (pmDeuda-'" + ab + "') where"
+                    + " idpm ='" + idpm + "'");
+            cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo - '" + ab + "') where idalumnos = '" + id + "'");
+            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
         }
-    
-    public void AsignarPagosM_Alumno(int nc, int can, String mes, int year){
-        try{
+    }
+
+    public void AsignarPagosM_Alumno(int nc, int can, String mes, int year) {
+        try {
             cmd = con.createStatement();
             cmd.executeUpdate("INSERT INTO tbl_pagos_meses (idalumnos, pmMes , pmAño, pmDeuda, pmPago)"
-                    + " values('"+nc+"', '"+mes+"', '"+year+"', '"+can+"', 0)");
-            cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo + '"+can+"') where idalumnos = '"+nc+"'");
+                    + " values('" + nc + "', '" + mes + "', '" + year + "', '" + can + "', 0)");
+            cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo + '" + can + "') where idalumnos = '" + nc + "'");
             JOptionPane.showMessageDialog(null, "Pago asignado correctamente", "Asignar pagos Mensuales", 1);
-        }catch(SQLException e){
-            
-            JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
-        }
-        
-    }
-    
-    public void AsignarPagosM_Tabla(ArrayList arr, int can, String mes, int year){
+        } catch (SQLException e) {
 
-        try{
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+
+    }
+
+    public void AsignarPagosM_Tabla(ArrayList arr, int can, String mes, int year) {
+
+        try {
             cmd = con.createStatement();
             for (Object a : arr) {
                 cmd.executeUpdate("INSERT INTO tbl_pagos_meses (idalumnos, pmMes , pmAño, pmDeuda, pmPago)"
-                    + " values('"+a+"', '"+mes+"', '"+year+"', '"+can+"', 0)");
-                cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo + '"+can+"') where idalumnos = '"+a+"'");
+                        + " values('" + a + "', '" + mes + "', '" + year + "', '" + can + "', 0)");
+                cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo + '" + can + "') where idalumnos = '" + a + "'");
             }
             JOptionPane.showMessageDialog(null, "Pago asignado correctamente", "Asignar pagos Mensuales", 1);
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
-        
+
         }
     }
-    public void todosLosMeses (JComboBox cb){
+
+    public void todosLosMeses(JComboBox cb) {
 
         try {
 
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("select distinct pmMes from tbl_pagos_meses");
-                    
+
             cb.removeAllItems();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 cb.addItem(rs.getString("pmMes"));
-            
+
             }
-            
+
             rs.close();
 
         } catch (SQLException ex) {
@@ -343,20 +358,20 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, ex, "Error", 0);
 
         }
-        
+
     }
-    
-    public void mostrarExt(DefaultTableModel m, String periodo){
+
+    public void mostrarExt(DefaultTableModel m, String periodo) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+periodo+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + periodo + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, "
                     + "semestrealumnos, saldo_ext FROM tbl_alumnos, tbl_extraordinarios, tbl_periodos "
-                    + "where tbl_alumnos.status=1 and tbl_alumnos.idalumnos = tbl_extraordinarios.idalumnos and tbl_periodos.idperiodo = "+idper+""
+                    + "where tbl_alumnos.status=1 and tbl_alumnos.idalumnos = tbl_extraordinarios.idalumnos and tbl_periodos.idperiodo = " + idper + ""
                     + " and tbl_periodos.idperiodo = tbl_extraordinarios.idperiodo");
 
             while (rs.next()) {
@@ -376,21 +391,21 @@ public class Conexion {
 
         }
     }
-    
-    public void cbPeriodos(JComboBox cb){
+
+    public void cbPeriodos(JComboBox cb) {
 
         try {
 
             cmd = con.createStatement();
             rs = cmd.executeQuery("select descripcion from tbl_periodos");
-                    
+
             cb.removeAllItems();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 cb.addItem(rs.getString("descripcion"));
-            
+
             }
-            
+
             rs.close();
 
         } catch (SQLException ex) {
@@ -399,8 +414,8 @@ public class Conexion {
 
         }
     }
-    
-    public void periodoActual(){
+
+    public void periodoActual() {
 
         try {
             cmd = con.createStatement();
@@ -415,26 +430,26 @@ public class Conexion {
 
         }
     }
-    
-    public void asignarExt(ArrayList arr){
 
-        try{
+    public void asignarExt(ArrayList arr) {
+
+        try {
             cmd = con.createStatement();
             rs = cmd.executeQuery("select valor_ext from tbl_valor_ext where id_valor = 1");
             rs.next();
             int valor = rs.getInt("valor_ext");
             for (Object obj : arr) {
                 cmd.executeUpdate("INSERT INTO tbl_extraordinarios (idalumnos, idperiodo, saldo_ext, pago_ext) "
-                        + "values("+obj+", "+periodo+", "+valor+", 0)");
+                        + "values(" + obj + ", " + periodo + ", " + valor + ", 0)");
             }
             JOptionPane.showMessageDialog(null, "Pago asignado correctamente", "Asignar pago extraordinario", 1);
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
+
         }
     }
-    
+
     public void todosAlumnosEXT(DefaultTableModel m) {
 
         try {
@@ -444,7 +459,7 @@ public class Conexion {
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT idalumnos, nombrealumnos, semestrealumnos FROM tbl_alumnos where status=1 and not idalumnos in "
-                    + "(select idalumnos from tbl_extraordinarios where idperiodo = "+idper+") order by semestrealumnos");
+                    + "(select idalumnos from tbl_extraordinarios where idperiodo = " + idper + ") order by semestrealumnos");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -463,30 +478,30 @@ public class Conexion {
 
         }
     }
-    
-    public void cambiar_ext(int v){
 
-        try{
+    public void cambiar_ext(int v) {
+
+        try {
             cmd = con.createStatement();
-                cmd.executeUpdate("UPDATE tbl_valor_ext set valor_ext="+v+" where id_valor=1");
-           
-        }catch(SQLException e){
-            
+            cmd.executeUpdate("UPDATE tbl_valor_ext set valor_ext=" + v + " where id_valor=1");
+
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
-        
+
         }
     }
-    public void infoAbonoTable_ext(DefaultTableModel m, int id, String per){
+
+    public void infoAbonoTable_ext(DefaultTableModel m, int id, String per) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+per+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + per + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("select fecha, cantidad, ref from tbl_abonos, tbl_extraordinarios where tbl_abonos.iddeuda "
-                    + "=idtbl_extraordinarios and idperiodo ='"+idper+"' and idalumnos='"+id+"' and tipo_pago=2");
+                    + "=idtbl_extraordinarios and idperiodo ='" + idper + "' and idalumnos='" + id + "' and tipo_pago=2");
 
             while (rs.next()) {
                 Object list[] = new Object[3];
@@ -504,16 +519,17 @@ public class Conexion {
 
         }
     }
-    public void infoAlumnoTable_ext(DefaultTableModel m, int id, String per){
+
+    public void infoAlumnoTable_ext(DefaultTableModel m, int id, String per) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+per+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + per + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT saldo_ext, pago_ext from tbl_extraordinarios where idalumnos="
-                    + ""+id+" and idperiodo ="+idper+"");
+                    + "" + id + " and idperiodo =" + idper + "");
 
             while (rs.next()) {
                 Object list[] = new Object[2];
@@ -530,41 +546,41 @@ public class Conexion {
 
         }
     }
-    
-    public void AbonarExt (int ab, String ref, int id , String ap){
-       
+
+    public void AbonarExt(int ab, String ref, int id, String ap) {
+
         try {
-            
+
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+ap+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("select idtbl_extraordinarios from tbl_extraordinarios where "
-                    + "idalumnos = "+id+" and idperiodo = "+idper+"");
+                    + "idalumnos = " + id + " and idperiodo = " + idper + "");
             rs.next();
             int idext = rs.getInt("idtbl_extraordinarios");
             cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                    + "('"+idext+"', 2, '"+ab+"', now(), '"+ref+"') ");
-            cmd.executeUpdate("UPDATE tbl_extraordinarios set pago_ext = (pago_ext +'"+ab+"'), saldo_ext= (saldo_ext-'"+ab+"') where"
-                    + " idtbl_extraordinarios ='"+idext+"'");
+                    + "('" + idext + "', 2, '" + ab + "', now(), '" + ref + "') ");
+            cmd.executeUpdate("UPDATE tbl_extraordinarios set pago_ext = (pago_ext +'" + ab + "'), saldo_ext= (saldo_ext-'" + ab + "') where"
+                    + " idtbl_extraordinarios ='" + idext + "'");
             JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a extraordinarios", 1);
-        } catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-            
+
         }
     }
-    
-    public void mostrarTodoInscripcion(DefaultTableModel m) {
+
+    public void mostrarTodoInscripcion(DefaultTableModel m, String ap) {
 
         try {
-            
+
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where status=1");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, ins_saldo FROM tbl_alumnos, tbl_inscripcion"
-                    + " where status=1 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = "+idper+"");
+                    + " where status=1 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + "");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -583,55 +599,49 @@ public class Conexion {
 
         }
     }
-        public void AsignarPagosI_Alumno(int nc, int can){
-        
-        try{
+
+    public void AsignarPagosI_Alumno(int nc, int can) {
+
+        try {
             cmd = con.createStatement();
             rs = cmd.executeQuery("select idperiodo from tbl_periodos where status=1");
-            rs.next();   
+            rs.next();
             idper = rs.getInt("idperiodo");
             cmd = con.createStatement();
             cmd.executeUpdate("INSERT INTO tbl_inscripcion (idalumnos, idperiodo,ins_saldo, ins_pago)"
-                    + " values('"+nc+"', '"+idper+"','"+can+"', 0)");
+                    + " values('" + nc + "', '" + idper + "','" + can + "', 0)");
             JOptionPane.showMessageDialog(null, "Pago asignado correctamente", "Asignar pagos a Inscripciones", 1);
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
+
         }
-        
+
     }
-    
-    public void AsignarPagosI_Tabla(ArrayList arr, int can){
-        
-        try{
+
+    public void AsignarPagosI_Tabla(ArrayList arr, int can) {
+
+        try {
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where status=1");
-            rs.next();   
-            idper = rs.getInt("idperiodo");
             for (Object a : arr) {
                 cmd.executeUpdate("INSERT INTO tbl_inscripcion(idalumnos, idperiodo,ins_saldo, ins_pago)"
-                    + " values('"+a+"', '"+idper+"','"+can+"', 0)");
+                        + " values('" + a + "', '" + periodo + "','" + can + "', 0)");
             }
             JOptionPane.showMessageDialog(null, "Pago asignado correctamente", "Asignar pagos a Inscripciones", 1);
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(null, e, "Error", 0);
-        
-        
+
         }
     }
-    public void todosAlumnosInscripcion(DefaultTableModel m) {
 
+    public void todosAlumnosInscripcion(DefaultTableModel m) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("SELECT idperiodo from tbl_periodos where status=1");
-            rs.next();
-            idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT idalumnos, nombrealumnos, semestrealumnos FROM tbl_alumnos where status=1 and not idalumnos in "
-                    + "(select idalumnos from tbl_inscripcion where idperiodo = "+idper+") order by semestrealumnos");
+                    + "(select idalumnos from tbl_inscripcion where idperiodo = " + periodo + ") order by semestrealumnos");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -650,17 +660,17 @@ public class Conexion {
 
         }
     }
-    
-    public void infoAbonoTable_ins(DefaultTableModel m, int id, String per){
+
+    public void infoAbonoTable_ins(DefaultTableModel m, int id, String per) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+per+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + per + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("select fecha, cantidad, ref from tbl_abonos, tbl_inscripcion where tbl_abonos.iddeuda "
-                    + "=idinscripcion and idperiodo ='"+idper+"' and idalumnos='"+id+"' and tipo_pago=3");
+                    + "=idinscripcion and idperiodo ='" + idper + "' and idalumnos='" + id + "' and tipo_pago=3");
 
             while (rs.next()) {
                 Object list[] = new Object[3];
@@ -678,16 +688,17 @@ public class Conexion {
 
         }
     }
-    public void infoAlumnoTable_ins(DefaultTableModel m, int id, String per){
+
+    public void infoAlumnoTable_ins(DefaultTableModel m, int id, String per) {
 
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+per+"'");
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + per + "'");
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT ins_saldo, ins_pago from tbl_inscripcion where idalumnos="
-                    + ""+id+" and idperiodo ="+idper+"");
+                    + "" + id + " and idperiodo =" + idper + "");
 
             while (rs.next()) {
                 Object list[] = new Object[2];
@@ -704,28 +715,85 @@ public class Conexion {
 
         }
     }
-    
-    public void AbonarIns (int ab, String ref, int id , String ap){
-       
+
+    public void AbonarIns(int ab, String ref, int id, String ap) {
+
         try {
-            
+
+            cmd = con.createStatement();
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '" + ap + "'");
+            rs.next();
+            idper = rs.getInt("idperiodo");
+            rs = cmd.executeQuery("select idinscripcion from tbl_inscripcion where "
+                    + "idalumnos = " + id + " and idperiodo = " + idper + "");
+            rs.next();
+            int idins = rs.getInt("idinscripcion");
+            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
+                    + "('" + idins + "', 3, '" + ab + "', now(), '" + ref + "') ");
+            cmd.executeUpdate("UPDATE tbl_inscripcion set ins_pago = (ins_pago +'" + ab + "'), ins_saldo= (ins_saldo-'" + ab + "') where"
+                    + " idinscripcion ='" + idins + "'");
+            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a Inscripciones", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+    }
+
+    public void mostrarTodoInscripcionBusqueda(DefaultTableModel m, String src, String ap) {
+
+        try {
+
             cmd = con.createStatement();
             rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+ap+"'");
             rs.next();
             idper = rs.getInt("idperiodo");
-            rs = cmd.executeQuery("select idinscripcion from tbl_inscripcion where "
-                    + "idalumnos = "+id+" and idperiodo = "+idper+"");
-            rs.next();
-            int idins = rs.getInt("idinscripcion");
-            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                    + "('"+idins+"', 3, '"+ab+"', now(), '"+ref+"') ");
-            cmd.executeUpdate("UPDATE tbl_inscripcion set ins_pago = (ins_pago +'"+ab+"'), ins_saldo= (ins_saldo-'"+ab+"') where"
-                    + " idinscripcion ='"+idins+"'");
-            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono a Inscripciones", 1);
-        } catch(SQLException e){
-            
-            JOptionPane.showMessageDialog(null, e, "Error", 0);
-            
+            rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, ins_saldo FROM tbl_alumnos, tbl_inscripcion"
+                    + " where status=1 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + ""
+                    + " and (tbl_alumnos.idalumnos = '" + src + "' or nombrealumnos LIKE '%" + src + "%')");
+
+            while (rs.next()) {
+                Object list[] = new Object[4];
+                list[0] = rs.getString("idalumnos");
+                list[1] = rs.getString("nombrealumnos");
+                list[2] = rs.getString("semestrealumnos");
+                list[3] = rs.getString("ins_saldo");
+
+                m.addRow(list);
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, ex, "Error", 0);
+
+        }
+    }
+    
+    public void todosAlumnosBusqueda(DefaultTableModel m, String src) {
+
+        try {
+
+            cmd = con.createStatement();
+
+            rs = cmd.executeQuery("SELECT idalumnos, nombrealumnos, semestrealumnos FROM tbl_alumnos"
+                    + " where status=1 and (idalumnos = '"+src+"' or nombrealumnos LIKE '%"+src+"%') order by semestrealumnos");
+
+            while (rs.next()) {
+                Object list[] = new Object[4];
+                list[0] = rs.getString("idalumnos");
+                list[1] = rs.getString("nombrealumnos");
+                list[2] = rs.getString("semestrealumnos");
+                list[3] = false;
+
+                m.addRow(list);
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, ex, "Error", 0);
+
         }
     }
 }

@@ -5,6 +5,8 @@
  */
 package contable;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
@@ -19,35 +21,53 @@ public class InfoExt extends javax.swing.JDialog {
      * Creates new form InfoExt
      */
     String nocontrol, nombre, saldo, per;
-    DefaultTableModel mpago,mAbono;
+    DefaultTableModel mpago, mAbono;
+    Model m = new Model();
+    Conexion c = new Conexion();
+
     //public InfoExt() {
     public InfoExt(java.awt.Frame parent, boolean modal) {
-    
+
         super(parent, modal);
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
         setData();
+        cbPeriodos.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                per = cbPeriodos.getSelectedItem().toString();
+                for (int i = 0; i < tblMeses.getRowCount(); i++) {
+                    mpago.removeRow(i);
+                    i -= 1;
+                }
+                for (int i = 0; i < tblAbonos.getRowCount(); i++) {
+                    mAbono.removeRow(i);
+                    i -= 1;
+                }
+                c.infoAlumnoTable_ext(mpago, Integer.parseInt(nocontrol), per);
+                c.infoAbonoTable_ext(mAbono, Integer.parseInt(nocontrol), per);
+            }
+        });
     }
-    
-final void setData(){
-        Model m = new Model();
-        Conexion c = new Conexion();
+
+    final void setData() {
+
         c.conectar();
         nocontrol = m.getNocontrol();
         nombre = m.getNombreAlumno();
         saldo = m.getSaldoAlumno();
         lblnocontrol.setText(nocontrol);
         lblNombre.setText(nombre);
-        lblSaldo.setText(saldo);     
+        lblSaldo.setText(saldo);
         mpago = (DefaultTableModel) tblMeses.getModel();
         mAbono = (DefaultTableModel) tblAbonos.getModel();
         c.cbPeriodos(cbPeriodos);
         per = cbPeriodos.getSelectedItem().toString();
         c.infoAlumnoTable_ext(mpago, Integer.parseInt(nocontrol), per);
         c.infoAbonoTable_ext(mAbono, Integer.parseInt(nocontrol), per);
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,9 +233,9 @@ final void setData(){
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        if (Integer.parseInt(saldo) == 0){
+        if (Integer.parseInt(saldo) == 0) {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
-        }else{
+        } else {
             new AbonarExt(null, true).setVisible(true);
         }
     }//GEN-LAST:event_btnAbonarActionPerformed

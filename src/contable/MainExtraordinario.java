@@ -5,6 +5,8 @@
  */
 package contable;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
@@ -19,11 +21,12 @@ import sql.Conexion;
  * @author Equipo
  */
 public class MainExtraordinario extends javax.swing.JInternalFrame {
+
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
     String nocontrol, nombre, saldo, periodo;
-    
+
     /**
      * Creates new form MainExtraordinario
      */
@@ -38,16 +41,28 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (KeyEvent.VK_ENTER == e.getKeyCode()) {
-                    nocontrol=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
-                    nombre=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
-                    saldo=String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
+                    nocontrol = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 0));
+                    nombre = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 1));
+                    saldo = String.valueOf(model.getValueAt(tblAlumnos.getSelectedRow(), 3));
                     m.setNocontrol(nocontrol);
                     m.setNombreAlumno(nombre);
                     m.setSaldoAlumno(saldo);
-                      new InfoExt(new Main(), true).setVisible(true);
+                    new InfoExt(new Main(), true).setVisible(true);
                 }
             }
         });
+        cbPeriodo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                periodo = cbPeriodo.getSelectedItem().toString();
+                for (int i = 0; i < tblAlumnos.getRowCount(); i++) {
+                    model.removeRow(i);
+                    i -= 1;
+                }
+                con.mostrarExt(model, periodo);
+            }
+        });
+
     }
 
     /**
@@ -114,39 +129,39 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(jButton1)
-                        .addGap(49, 49, 49)
-                        .addComponent(jButton3)))
+                .addGap(265, 265, 265)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(49, 49, 49)
+                .addComponent(jButton3)
+                .addGap(240, 240, 240))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton3))
-                .addContainerGap())
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -157,19 +172,19 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    try{
-        String s = (String)JOptionPane.showInputDialog(this, "Seleccione un nuevo valor para los extraordinarios", "Seleccione un precio", 1);
-        int valor = Integer.parseInt(s);
-        int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
-        if (n == 0){
-            con.cambiar_ext(valor);
-        }else{
-            
-        }   
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");
-    }
-    
+        try {
+            String s = (String) JOptionPane.showInputDialog(this, "Seleccione un nuevo valor para los extraordinarios", "Seleccione un precio", 1);
+            int valor = Integer.parseInt(s);
+            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                con.cambiar_ext(valor);
+            } else {
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

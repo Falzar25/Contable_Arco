@@ -5,8 +5,11 @@
  */
 package contable;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
@@ -22,13 +25,14 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
-    String nocontrol, nombre, saldo;
+    String nocontrol, nombre, saldo, periodo;
     public MainInscripcion() {
         initComponents();
         con.conectar();
         model = (DefaultTableModel) tblAlumnos.getModel();
         con.cbPeriodos(cbPeriodo);
-        con.mostrarTodoInscripcion(model);
+        periodo = cbPeriodo.getSelectedItem().toString();
+        con.mostrarTodoInscripcion(model, periodo);
         tblAlumnos.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -43,8 +47,24 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                 }
             }
         });
+        cbPeriodo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                periodo = cbPeriodo.getSelectedItem().toString();
+                for (int i = 0; i < tblAlumnos.getRowCount(); i++) {
+                    model.removeRow(i);
+                    i -= 1;
+                }
+                con.mostrarTodoInscripcion(model, periodo);
+            }
+        });
     }
-
+    public void Limpiar(DefaultTableModel m, JTable jt) {
+        for (int i = 0; i < jt.getRowCount(); i++) {
+            m.removeRow(i);
+            i -= 1;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,7 +147,7 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -144,9 +164,9 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                         .addGap(137, 137, 137)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(214, 214, 214)
                 .addComponent(btnPutSaldo)
-                .addGap(72, 72, 72)
+                .addGap(74, 74, 74)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -164,12 +184,11 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                     .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(7, 7, 7)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPutSaldo)
-                    .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1)))
         );
 
         pack();
@@ -180,9 +199,9 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        /* this.Limpiar(model, tblAlumnos);
-        con.mostrarBusqueda(model, txtBuscar.getText());
-        txtBuscar.setText("");*/
+        this.Limpiar(model, tblAlumnos);
+        con.mostrarTodoInscripcionBusqueda(model, txtBuscar.getText(), periodo);
+        txtBuscar.setText("");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnPutSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPutSaldoActionPerformed
@@ -190,9 +209,9 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPutSaldoActionPerformed
 
     private void btnRevertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevertirActionPerformed
-        /* this.Limpiar(model, tblAlumnos);
-        con.mostrarTodo(model);
-        txtBuscar.setText("");*/
+        this.Limpiar(model, tblAlumnos);
+        con.mostrarTodoInscripcion(model, periodo);
+        txtBuscar.setText("");
     }//GEN-LAST:event_btnRevertirActionPerformed
 
 

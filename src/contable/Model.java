@@ -14,6 +14,15 @@ public class Model {
     private static String nombreAlumno;
     private static String saldoAlumno;
     private static int periodoActual;
+    private static int semestre;
+
+    public static int getSemestre() {
+        return semestre;
+    }
+
+    public static void setSemestre(int semestre) {
+        Model.semestre = semestre;
+    }
 
     public int getPeriodoActual() {
         return periodoActual;

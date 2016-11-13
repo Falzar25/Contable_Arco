@@ -5,25 +5,31 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
  *
  * @author Equipo
  */
-public class Editar_Alumnos extends javax.swing.JInternalFrame {
-    int nc, exnc, semestre;
-    String name;
+public class Editar_Alumnos extends javax.swing.JDialog {
+
+    int nc, exnc, semestre, exs;
+    String name, exname;
+
     /**
      * Creates new form Editar_Alumnos
      */
-    public Editar_Alumnos() {
-        
+    public Editar_Alumnos(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        
         Model m = new Model();
         exnc = Integer.parseInt(m.getNocontrol());
-        txtNC.setText(""+exnc);
+        exname = m.getNombreAlumno();
+        exs = m.getSemestre();
+        cbSemestre.setSelectedIndex(exs-1);
+        txtNC.setText("" + exnc);
+        txtName.setText(""+exname);
     }
 
     /**
@@ -44,9 +50,6 @@ public class Editar_Alumnos extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnEditar1 = new javax.swing.JButton();
 
-        setClosable(true);
-        setIconifiable(true);
-        setMaximizable(true);
         setTitle("Editar un alumno");
 
         jLabel1.setText("Nombre:");
@@ -127,20 +130,24 @@ public class Editar_Alumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        name= txtName.getText();
-        nc = Integer.parseInt(txtNC.getText());
-        semestre = 1+cbSemestre.getSelectedIndex();
-        Conexion c = new Conexion();
-        c.conectar();
-        c.editarAlumno(exnc, nc, name, semestre);
-        System.exit(0);
+        try {
+            name = txtName.getText();
+            nc = Integer.parseInt(txtNC.getText());
+            semestre = 1 + cbSemestre.getSelectedIndex();
+            Conexion c = new Conexion();
+            c.conectar();
+            c.editarAlumno(exnc, nc, name, semestre);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Introduzca valores correctos", "Error", 0);
+        }
+
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEditar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnEditar1ActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

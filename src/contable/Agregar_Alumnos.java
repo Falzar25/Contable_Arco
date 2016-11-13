@@ -5,6 +5,7 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
@@ -12,14 +13,17 @@ import sql.Conexion;
  * @author Equipo
  */
 public class Agregar_Alumnos extends javax.swing.JInternalFrame {
+
     String name;
     int nc, semestre;
+    Conexion c = new Conexion();
+
     /**
      * Creates new form Agregar_Alumnos
      */
     public Agregar_Alumnos() {
         initComponents();
-        
+        c.conectar();
     }
 
     /**
@@ -38,7 +42,7 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         cbSemestre = new javax.swing.JComboBox<>();
         btnAgregar = new javax.swing.JButton();
-        btnAgregar1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -63,10 +67,10 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAgregar1.setText("Cancelar");
-        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar1ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -75,27 +79,28 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNC, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNC, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(79, 79, 79)
+                        .addComponent(btnAgregar)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnCancelar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregar1)
-                .addGap(34, 34, 34)
-                .addComponent(btnAgregar)
-                .addGap(93, 93, 93))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,34 +120,34 @@ public class Agregar_Alumnos extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
-                    .addComponent(btnAgregar1))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(btnCancelar))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        name= txtName.getText();
-        nc = Integer.parseInt(txtNC.getText());
-        semestre = 1+cbSemestre.getSelectedIndex();
-        Conexion c = new Conexion();
-        c.conectar();
-        c.agregarAlumnos(nc, name, semestre);
-        txtName.setText("");
-        txtNC.setText("");
-        cbSemestre.setSelectedIndex(0);
-        
+        try {
+            name = txtName.getText();
+            nc = Integer.parseInt(txtNC.getText());
+            semestre = 1 + cbSemestre.getSelectedIndex();
+            txtName.setText("");
+            txtNC.setText("");
+            c.agregarAlumnos(nc, name, semestre);    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnAgregar1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox<String> cbSemestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
