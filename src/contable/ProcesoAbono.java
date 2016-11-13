@@ -62,6 +62,11 @@ public class ProcesoAbono extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Seleccione el mes:");
 
@@ -148,6 +153,10 @@ public class ProcesoAbono extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_btnAbonarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

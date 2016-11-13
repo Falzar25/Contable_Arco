@@ -256,6 +256,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
                 con.AsignarPagosM_Tabla(arr, cantidad, mes, year);
 
             }
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
         }

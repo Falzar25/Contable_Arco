@@ -31,7 +31,7 @@ import sql.Conexion;
  */
 public class CrearReporteMensual {
     Connection con = null;
-    public void crearReporte(String month) {
+    public void crearReporte(String year) {
         try {
             try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -53,7 +53,7 @@ public class CrearReporteMensual {
         }
             
             Map<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("month", month);
+            parametros.put("year", year);
             File f = new File("reporte_pagos_mensuales.jasper");
             JasperReport reporte = (JasperReport) JRLoader.loadObject(f);
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, con);

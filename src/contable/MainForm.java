@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import reports.CrearReporteMensual;
 import sql.Conexion;
 
 /**
@@ -28,6 +29,7 @@ public class MainForm extends javax.swing.JInternalFrame {
         initComponents();
         con.conectar();
         model = (DefaultTableModel) tblAlumnos.getModel();
+        con.añosCB(cbAño);
         con.mostrarTodo(model);
         tblAlumnos.addKeyListener(new KeyAdapter() {
             @Override
@@ -75,6 +77,8 @@ public class MainForm extends javax.swing.JInternalFrame {
         btnRevertir = new javax.swing.JButton();
         btnPutSaldo = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        cbAño = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -130,6 +134,8 @@ public class MainForm extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setText("Año:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,7 +143,7 @@ public class MainForm extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,6 +152,10 @@ public class MainForm extends javax.swing.JInternalFrame {
                         .addComponent(btnBuscar)
                         .addGap(18, 18, 18)
                         .addComponent(btnRevertir)
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -163,9 +173,11 @@ public class MainForm extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar)
-                    .addComponent(btnRevertir))
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                    .addComponent(btnRevertir)
+                    .addComponent(cbAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPutSaldo)
@@ -196,7 +208,8 @@ public class MainForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPutSaldoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JOptionPane.showMessageDialog(this, "Uribeee has la WEAA");
+        CrearReporteMensual crm = new CrearReporteMensual();
+        //Aqui van reportes
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /*
@@ -230,8 +243,10 @@ public class MainForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnPutSaldo;
     private javax.swing.JButton btnRevertir;
+    private javax.swing.JComboBox<String> cbAño;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAlumnos;
     private javax.swing.JTextField txtBuscar;

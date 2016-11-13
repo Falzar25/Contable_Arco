@@ -289,23 +289,29 @@ public class Conexion {
     public void Abonar(int ab, int añ, String ms, String ref, int id) {
 
         String idpm = "";
+        int deuda=0;
         try {
 
             cmd = con.createStatement();
 
-            rs = cmd.executeQuery("select idpm from tbl_pagos_meses where pmMes= "
+            rs = cmd.executeQuery("select idpm, pmDeuda from tbl_pagos_meses where pmMes= "
                     + "'" + ms + "' and pmAño = '" + añ + "' and idalumnos = '" + id + "'");
             while (rs.next()) {
 
                 idpm = rs.getString("idpm");
-
+                deuda = rs.getInt("pmDeuda");
             }
-            cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
-                    + "('" + idpm + "', 1, '" + ab + "', now(), '" + ref + "') ");
-            cmd.executeUpdate("UPDATE tbl_pagos_meses set pmPago = (pmPago +'" + ab + "'), pmDeuda= (pmDeuda-'" + ab + "') where"
-                    + " idpm ='" + idpm + "'");
-            cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo - '" + ab + "') where idalumnos = '" + id + "'");
-            JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono", 1);
+            if (deuda - ab < 0) {
+                JOptionPane.showMessageDialog(null, "Abono mayor que la deuda, por favor ingrese una cantidad correcta", "Error", 0);
+            } else {
+                cmd.executeUpdate("INSERT INTO tbl_abonos (iddeuda, tipo_pago, cantidad, fecha, ref) values"
+                        + "('" + idpm + "', 1, '" + ab + "', now(), '" + ref + "') ");
+                cmd.executeUpdate("UPDATE tbl_pagos_meses set pmPago = (pmPago +'" + ab + "'), pmDeuda= (pmDeuda-'" + ab + "') where"
+                        + " idpm ='" + idpm + "'");
+                cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo - '" + ab + "') where idalumnos = '" + id + "'");
+                JOptionPane.showMessageDialog(null, "Abono agregado correctamente", "Abono", 1);
+            }
+
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, e, "Error", 0);
