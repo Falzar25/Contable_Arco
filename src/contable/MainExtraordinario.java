@@ -23,14 +23,13 @@ import sql.Conexion;
  */
 public class MainExtraordinario extends javax.swing.JInternalFrame {
 
+    public static MainExtraordinario instance =  null;
+    
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
     String nocontrol, nombre, saldo, periodo;
 
-    /**
-     * Creates new form MainExtraordinario
-     */
     public MainExtraordinario() {
         initComponents();
         con.conectar();
@@ -69,6 +68,13 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
             }
         });
 
+    }
+    
+    public static MainExtraordinario getInstance() {
+        if (instance == null) {
+            instance = new MainExtraordinario();
+        }
+        return instance;
     }
 
     public void Limpiar(DefaultTableModel m, JTable jt) {

@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package contable;
 
+import static contable.MainExtraordinario.instance;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -13,15 +9,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
-/**
- *
- * @author Equipo
- */
+
 public class MainInscripcion extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form MainInscripcion
-     */
+    public static MainInscripcion instance = null;
+    
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
@@ -65,6 +57,13 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                 con.mostrarTodoInscripcion(model, periodo);
             }
         });
+    }
+    
+    public static MainInscripcion getInstance() {
+        if (instance == null) {
+            instance = new MainInscripcion();
+        }
+        return instance;
     }
 
     public void Limpiar(DefaultTableModel m, JTable jt) {

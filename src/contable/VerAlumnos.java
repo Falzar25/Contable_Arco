@@ -16,9 +16,8 @@ import sql.Conexion;
  */
 public class VerAlumnos extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VerAlumnos
-     */
+    public static VerAlumnos instance = null;
+    
     int nocontrol;
     Conexion con = new Conexion();
     Model m = new Model();
@@ -29,6 +28,13 @@ public class VerAlumnos extends javax.swing.JInternalFrame {
         model = (DefaultTableModel) tblAlumnos.getModel();
         con.conectar();
         con.todosAlumnos(model);
+    }
+    
+    public static VerAlumnos getInstance() {
+        if (instance == null) {
+            instance = new VerAlumnos();
+        }
+        return instance;
     }
 
     public void Limpiar(DefaultTableModel m, JTable jt) {

@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package contable;
 
+import static contable.MainExtraordinario.instance;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -14,18 +10,16 @@ import javax.swing.table.DefaultTableModel;
 import reports.CrearReporteMensual;
 import sql.Conexion;
 
-/**
- *
- * @author Equipo
- */
-public class MainForm extends javax.swing.JInternalFrame {
+public class MainMensualidades extends javax.swing.JInternalFrame {
 
+    public static MainMensualidades instance = null;
+    
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
     String nocontrol, nombre, saldo;
 
-    public MainForm() {
+    public MainMensualidades() {
         initComponents();
         con.conectar();
         model = (DefaultTableModel) tblAlumnos.getModel();
@@ -50,6 +44,13 @@ public class MainForm extends javax.swing.JInternalFrame {
                 }
             }
         });
+    }
+    
+    public static MainMensualidades getInstance() {
+        if (instance == null) {
+            instance = new MainMensualidades();
+        }
+        return instance;
     }
 
     public void Limpiar(DefaultTableModel m, JTable jt) {

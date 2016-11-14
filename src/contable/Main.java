@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package contable;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import sql.Conexion;
 
@@ -12,17 +16,19 @@ import sql.Conexion;
  * @author g04rtx
  */
 public class Main extends javax.swing.JFrame {
+
     Conexion con = new Conexion();
     Model m = new Model();
+
     public Main() {
         initComponents();
         setLocationRelativeTo(null);
         con.conectar();
         con.periodoActual();
     }
+   
     
     public static int count = 0;
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -152,31 +158,37 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        VerAlumnos ver_alumnos = new VerAlumnos();
+        VerAlumnos ver_alumnos = VerAlumnos.getInstance();
+        
+        desktopPane.remove(ver_alumnos);
         desktopPane.add(ver_alumnos);
+        
         ver_alumnos.setVisible(true);
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
-        MainExtraordinario mainExtraordinario = new MainExtraordinario();
+        MainExtraordinario mainExtraordinario = MainExtraordinario.getInstance();
+        desktopPane.remove(mainExtraordinario);
         desktopPane.add(mainExtraordinario);
         mainExtraordinario.setVisible(true);
     }//GEN-LAST:event_contentMenuItemActionPerformed
 
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-        MainForm mainForm = new MainForm();
+        MainMensualidades mainForm = MainMensualidades.getInstance();
+        desktopPane.remove(mainForm);
         desktopPane.add(mainForm);
         mainForm.setVisible(true);
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        MainInscripcion mainInscricion = new MainInscripcion();
+        MainInscripcion mainInscricion =  MainInscripcion.getInstance();
+        desktopPane.remove(mainInscricion);
         desktopPane.add(mainInscricion);
         mainInscricion.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new ActivarPeriodo(null, true).setVisible(true); 
+        new ActivarPeriodo(null, true).setVisible(true);        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -186,7 +198,7 @@ public class Main extends javax.swing.JFrame {
             if (valor <= 2010) {
                 JOptionPane.showMessageDialog(this, "Por favor ingrese un valor mayor que 2010");
             } else {
-
+                
                 int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
                 if (n == 0) {
                     con.agregarYear(valor);
@@ -196,8 +208,6 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-    
-   
     
     public static void main(String args[]) {
         try {
@@ -215,7 +225,7 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }     
+        }        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);

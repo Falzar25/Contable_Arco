@@ -39,7 +39,7 @@ public class Conexion {
 
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost/abonos?"
-                    + "user=root&password=Falzar250");
+                    + "user=root&password=p4j4r0_c4rp1nt3r0");
 
         } catch (SQLException ex) {
 
