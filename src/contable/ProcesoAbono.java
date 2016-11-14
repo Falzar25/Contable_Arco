@@ -16,6 +16,7 @@ public class ProcesoAbono extends javax.swing.JDialog {
     String nocontrol, mes, ref;
     int abono, año;
     Conexion c = new Conexion();
+    String array_meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
     /**
      * Creates new form procesoAbono
      */
@@ -25,10 +26,13 @@ public class ProcesoAbono extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         Model m = new Model();
         c.conectar();
+        for (String ar : array_meses) {
+            cbMes.addItem(ar);
+        }
         nocontrol = m.getNocontrol();
         prueba.setText(nocontrol);
         c.añosCB(cbAño);
-        c.mesesCB(cbMes, Integer.parseInt(nocontrol));
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -71,8 +75,6 @@ public class ProcesoAbono extends javax.swing.JDialog {
         jLabel2.setText("Seleccione el mes:");
 
         jLabel3.setText("Seleccione el año:");
-
-        cbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cbAño.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 

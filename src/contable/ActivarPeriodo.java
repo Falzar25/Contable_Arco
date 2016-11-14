@@ -5,34 +5,23 @@
  */
 package contable;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import sql.Conexion;
 
 /**
  *
- * @author Falza
+ * @author Equipo
  */
-public class EditarAsignarPagosM extends javax.swing.JDialog {
-
-    int deuda, pago, year, nocontrol;
-    String mes;
-    String array_meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-    Conexion con = new Conexion();
-    Model m = new Model();
+public class ActivarPeriodo extends javax.swing.JDialog {
 
     /**
-     * Creates new form EditarAsignarPagosM
+     * Creates new form ActivarPeriodo
      */
-    public EditarAsignarPagosM(java.awt.Frame parent, boolean modal) {
+    Conexion con = new Conexion();
+    public ActivarPeriodo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
         con.conectar();
-        for (String ar : array_meses) {
-            cbMes.addItem(ar);
-        }
-        year = m.getYear();
     }
 
     /**
@@ -44,22 +33,20 @@ public class EditarAsignarPagosM extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cbMes = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtDeuda = new javax.swing.JTextField();
-        txtPago = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        btnCancer = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        txtMInicio = new javax.swing.JTextField();
+        txtMTermino = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
 
-        setTitle("Editar Mensualidad");
+        setTitle("Periodo");
 
-        jLabel1.setText("Mes:");
+        jLabel1.setText("Mes de inicio:");
 
-        jLabel2.setText("Deuda:");
-
-        jLabel3.setText("Pago:");
+        jLabel2.setText("Mes de termino:");
 
         jButton1.setText("Ok");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -68,36 +55,45 @@ public class EditarAsignarPagosM extends javax.swing.JDialog {
             }
         });
 
-        btnCancer.setText("Cancelar");
-        btnCancer.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancerActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
+
+        txtMInicio.setText("Año-mes-dia");
+
+        txtMTermino.setText("Año-mes-dia");
+
+        jLabel3.setText("Descripcion:");
+
+        txtDescripcion.setText("Mes Año - Mes Año");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMInicio))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDeuda))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPago))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtMTermino))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancer)))
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -105,55 +101,45 @@ public class EditarAsignarPagosM extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(txtMInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtMTermino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(btnCancer))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancerActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnCancerActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            nocontrol = Integer.parseInt(m.getNocontrol());
-            mes = cbMes.getSelectedItem().toString();
-            deuda = Integer.parseInt(txtDeuda.getText());
-            pago = Integer.parseInt(txtPago.getText());
-            con.AsignarPagosM_AlumnoEditar(nocontrol, deuda, pago, mes, year);
-            this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, ""
-                    + "Por favor introduzca valores correctos", "Error", 0);
-        }
-
-
+        con.activarPeriodo(txtMInicio.getText(), txtMTermino.getText(), txtDescripcion.getText());
+        this.dispose();
+        con.periodoActual();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancer;
-    private javax.swing.JComboBox<String> cbMes;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtDeuda;
-    private javax.swing.JTextField txtPago;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtMInicio;
+    private javax.swing.JTextField txtMTermino;
     // End of variables declaration//GEN-END:variables
 }

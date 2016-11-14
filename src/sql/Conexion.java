@@ -55,7 +55,7 @@ public class Conexion {
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, saldo FROM tbl_alumnos, tbl_saldo_total"
-                    + " where status=1 and tbl_alumnos.idalumnos = tbl_saldo_total.idalumnos");
+                    + " where status!=0 and tbl_alumnos.idalumnos = tbl_saldo_total.idalumnos");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -109,7 +109,7 @@ public class Conexion {
             cmd = con.createStatement();
 
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, saldo"
-                    + " FROM tbl_alumnos, tbl_saldo_total where status=1 "
+                    + " FROM tbl_alumnos, tbl_saldo_total where status!=0 "
                     + "and tbl_alumnos.idalumnos = tbl_saldo_total.idalumnos "
                     + "and (tbl_alumnos.idalumnos='" + s + "' or nombrealumnos LIKE '%" + s + "%')");
 
@@ -185,29 +185,7 @@ public class Conexion {
 
     }
 
-    public void mesesCB(JComboBox cb, int id) {
-
-        try {
-
-            cmd = con.createStatement();
-
-            rs = cmd.executeQuery("select distinct pmMes from tbl_pagos_meses where idalumnos = '" + id + "' and pmDeuda != 0");
-
-            cb.removeAllItems();
-            while (rs.next()) {
-
-                cb.addItem(rs.getString("pmMes"));
-
-            }
-
-            rs.close();
-
-        } catch (SQLException ex) {
-
-            JOptionPane.showMessageDialog(null, ex, "Error", 0);
-
-        }
-    }
+    
 
     public void añosCB(JComboBox cb) {
 
@@ -215,12 +193,12 @@ public class Conexion {
 
             cmd = con.createStatement();
 
-            rs = cmd.executeQuery("SELECT pmAño as pa from tbl_pagos_meses group by pmAño");
+            rs = cmd.executeQuery("SELECT year from tbl_year order by year DESC");
 
             cb.removeAllItems();
             while (rs.next()) {
 
-                cb.addItem(rs.getString("pa"));
+                cb.addItem(rs.getString("year"));
 
             }
 
@@ -334,6 +312,50 @@ public class Conexion {
 
     }
 
+    public void AsignarPagosM_AlumnoEditar(int nc, int deuda, int pago, String mes, int year) {
+        try {
+            int total = 0, idpm = 0;
+            Model m = new Model();
+            cmd = con.createStatement();
+            rs = cmd.executeQuery("select idpm, pmDeuda, pmPago from tbl_pagos_meses where idalumnos=" + nc + " and pmMes='" + m.getMonth() + "'"
+                    + " and pmAño ='" + m.getYear() + "'");
+            while (rs.next()) {
+                idpm = rs.getInt("idpm");
+                total = rs.getInt("pmDeuda");
+            }
+            cmd.executeUpdate("UPDATE tbl_pagos_meses set pmMes='" + mes + "', pmAño = " + year + ", pmDeuda=" + deuda + ", pmPago="
+                    + "" + pago + " where idpm = " + idpm + "");
+            cmd.executeUpdate("UPDATE tbl_saldo_total set saldo = (saldo - '" + total + "' + " + deuda + ") where idalumnos = '" + nc + "'");
+            JOptionPane.showMessageDialog(null, "Pago editado correctamente", "Asignar pagos Mensuales", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+
+    }
+
+    public void AsignarAbonoEditar(int nc, String ref, int abono) {
+        try {
+            int total = 0, idpm = 0;
+            Model m = new Model();
+            cmd = con.createStatement();
+            rs = cmd.executeQuery("select idpm from tbl_pagos_meses where idalumnos=" + nc + " and pmMes='" + m.getMonth() + "'"
+                    + " and pmAño ='" + m.getYear() + "'");
+            while (rs.next()) {
+                idpm = rs.getInt("idpm");
+            }
+            cmd.executeUpdate("UPDATE tbl_abonos set cantidad=" + abono + ", ref = '" + ref + "' where iddeuda = " + idpm + ""
+                    + " and tipo_pago=1");
+            JOptionPane.showMessageDialog(null, "Abono editado correctamente", "Abonos Mensuales", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+
+    }
+
     public void AsignarPagosM_Tabla(ArrayList arr, int can, String mes, int year) {
 
         try {
@@ -386,7 +408,7 @@ public class Conexion {
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, "
                     + "semestrealumnos, saldo_ext FROM tbl_alumnos, tbl_extraordinarios, tbl_periodos "
-                    + "where tbl_alumnos.status=1 and tbl_alumnos.idalumnos = tbl_extraordinarios.idalumnos and tbl_periodos.idperiodo = " + idper + ""
+                    + "where tbl_alumnos.status!=0 and tbl_alumnos.idalumnos = tbl_extraordinarios.idalumnos and tbl_periodos.idperiodo = " + idper + ""
                     + " and tbl_periodos.idperiodo = tbl_extraordinarios.idperiodo");
 
             while (rs.next()) {
@@ -412,7 +434,7 @@ public class Conexion {
         try {
 
             cmd = con.createStatement();
-            rs = cmd.executeQuery("select descripcion from tbl_periodos");
+            rs = cmd.executeQuery("select descripcion from tbl_periodos order by idperiodo DESC");
 
             cb.removeAllItems();
             while (rs.next()) {
@@ -602,7 +624,7 @@ public class Conexion {
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, ins_saldo FROM tbl_alumnos, tbl_inscripcion"
-                    + " where status=1 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + "");
+                    + " where status!=0 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + "");
 
             while (rs.next()) {
                 Object list[] = new Object[4];
@@ -777,7 +799,7 @@ public class Conexion {
             rs.next();
             idper = rs.getInt("idperiodo");
             rs = cmd.executeQuery("SELECT tbl_alumnos.idalumnos, nombrealumnos, semestrealumnos, ins_saldo FROM tbl_alumnos, tbl_inscripcion"
-                    + " where status=1 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + ""
+                    + " where status!=0 and tbl_alumnos.idalumnos = tbl_inscripcion.idalumnos and idperiodo = " + idper + ""
                     + " and (tbl_alumnos.idalumnos = '" + src + "' or nombrealumnos LIKE '%" + src + "%')");
 
             while (rs.next()) {
@@ -821,6 +843,29 @@ public class Conexion {
         } catch (SQLException ex) {
 
             JOptionPane.showMessageDialog(null, ex, "Error", 0);
+
+        }
+    }
+
+    public void activarPeriodo(String fi, String ft, String descripcion) {
+
+        try {
+            cmd = con.createStatement();
+            cmd.executeUpdate("UPDATE tbl_periodos set status = 0 where status=1");
+            cmd.executeUpdate("UPDATE tbl_alumnos set semestrealumnos = (semestrealumnos+1) where status=1");
+            rs=cmd.executeQuery("SELECT idalumnos,semestrealumnos from tbl_alumnos where status = 1");
+            while(rs.next()){
+                if(rs.getInt("semestrealumnos")>6){
+                    cmd.executeUpdate("UPDATE tbl_alumnos set status=2 where idalumnos="+rs.getInt("idalumnos")+"");
+                }
+            }
+            cmd.executeUpdate("INSERT INTO tbl_periodos (descripcion, fechaInicio, fechaFinal, status) values"
+                    + "('"+descripcion+"', '"+fi+"', '"+ft+"', 1)");
+
+            JOptionPane.showMessageDialog(null, "Periodo Activado correctamente", "Periodos", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
 
         }
     }
