@@ -5,6 +5,7 @@
  */
 package contable;
 
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
@@ -17,6 +18,7 @@ public class ActivarPeriodo extends javax.swing.JDialog {
      * Creates new form ActivarPeriodo
      */
     Conexion con = new Conexion();
+
     public ActivarPeriodo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -126,9 +128,20 @@ public class ActivarPeriodo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        con.activarPeriodo(txtMInicio.getText(), txtMTermino.getText(), txtDescripcion.getText());
-        this.dispose();
-        con.periodoActual();
+        try {
+            if (txtMInicio.toString().substring(4, 5) != "-" || txtMInicio.toString().substring(7, 8) != "-") {
+                JOptionPane.showMessageDialog(null, "Introduzca un valor de fecha correcto (Año-mes-dia)", "Error", 0);
+            } else if (txtMTermino.toString().substring(4, 5) != "-" || txtMTermino.toString().substring(7, 8) != "-") {
+                JOptionPane.showMessageDialog(null, "Introduzca un valor de fecha correcto (Año-mes-dia)", "Error", 0);
+            } else {
+                con.activarPeriodo(txtMInicio.getText(), txtMTermino.getText(), txtDescripcion.getText());
+                con.periodoActual();
+                this.dispose();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor introduzca valores correctos", "Error", 0);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
