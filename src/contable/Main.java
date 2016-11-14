@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package contable;
+import javax.swing.JOptionPane;
 import sql.Conexion;
 
 /**
@@ -40,6 +41,7 @@ public class Main extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,7 +110,7 @@ public class Main extends javax.swing.JFrame {
 
         menuBar.add(jMenu1);
 
-        jMenu2.setText("Periodos");
+        jMenu2.setText("Periodos y Años");
 
         jMenuItem2.setText("Activar nuevo periodo");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +119,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Agregar un nuevo Año");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
 
         menuBar.add(jMenu2);
 
@@ -167,6 +177,24 @@ public class Main extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         new ActivarPeriodo(null, true).setVisible(true);   
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            String s = (String) JOptionPane.showInputDialog(this, "Ingrese el nuevo año", "Agregar un año", 1);
+            int valor = Integer.parseInt(s);
+            if (valor <= 2010) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese un valor mayor que 2010");
+            } else {
+
+                int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
+                if (n == 0) {
+                    con.agregarYear(valor);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
     
    
     
@@ -205,6 +233,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem saveMenuItem;

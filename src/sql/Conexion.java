@@ -869,4 +869,17 @@ public class Conexion {
 
         }
     }
+    public void agregarYear(int year) {
+        try {
+
+            cmd = con.createStatement();
+            cmd.executeUpdate("INSERT INTO tbl_year (year) values("+year+")");
+            JOptionPane.showMessageDialog(null, "Año agregado correctamente", "Correcto", 1);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
+
+        }
+
+    }
 }
