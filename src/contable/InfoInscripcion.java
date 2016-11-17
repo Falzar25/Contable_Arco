@@ -21,8 +21,7 @@ public class InfoInscripcion extends javax.swing.JDialog {
     /**
      * Creates new form InfoInscripcion
      */
-    String nocontrol, nombre, per;
-    int saldo;
+    String nocontrol, nombre, per, saldo, ref;
     DefaultTableModel ipago, iAbono;
     Model m = new Model();
     Conexion c = new Conexion();
@@ -55,9 +54,10 @@ public class InfoInscripcion extends javax.swing.JDialog {
         c.conectar();
         nocontrol = m.getNocontrol();
         nombre = m.getNombreAlumno();
-        saldo = Integer.parseInt(m.getSaldoAlumno());
+        saldo = m.getSaldoAlumno();
         lblnocontrol.setText(nocontrol);
         lblNombre.setText(nombre);
+        lblSaldo.setText(saldo);
         ipago = (DefaultTableModel) tblMeses.getModel();
         iAbono = (DefaultTableModel) tblAbonos.getModel();
         c.cbPeriodos(cbPeriodos);
@@ -88,6 +88,10 @@ public class InfoInscripcion extends javax.swing.JDialog {
         cbPeriodos = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         btnAbonar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        lblSaldo = new javax.swing.JLabel();
+        btnEliminarIns = new javax.swing.JButton();
+        btnEliminarAbono = new javax.swing.JButton();
 
         tblMeses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -151,63 +155,109 @@ public class InfoInscripcion extends javax.swing.JDialog {
             }
         });
 
+        jLabel3.setText("Saldo:");
+
+        lblSaldo.setText("jLabel5");
+
+        btnEliminarIns.setText("Eliminar");
+        btnEliminarIns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarInsActionPerformed(evt);
+            }
+        });
+
+        btnEliminarAbono.setText("Eliminar");
+        btnEliminarAbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAbonoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAbonar)
+                .addGap(75, 75, 75)
+                .addComponent(btnBack)
+                .addGap(137, 137, 137))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(btnAbonar)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnBack))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblNombre))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblnocontrol)))
+                                .addGap(29, 29, 29)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblNombre))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblnocontrol)))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                                .addComponent(lblSaldo))
+                            .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminarIns)
+                    .addComponent(btnEliminarAbono))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lblNombre))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lblnocontrol))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(lblnocontrol)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(lblSaldo))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(btnEliminarIns)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnEliminarAbono)
+                        .addGap(50, 50, 50)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAbonar)
-                    .addComponent(btnBack))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnBack)
+                    .addComponent(btnAbonar))
+                .addContainerGap())
         );
 
         pack();
@@ -218,35 +268,58 @@ public class InfoInscripcion extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-        if (saldo == 0) {
+        if (Integer.parseInt(saldo) == 0) {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
         } else {
             new AbonarIns(new Main(), true).setVisible(true);
-            for (int i = 0; i < tblMeses.getRowCount(); i++) {
-                ipago.removeRow(i);
-                i -= 1;
-            }
-            for (int i = 0; i < tblAbonos.getRowCount(); i++) {
-                iAbono.removeRow(i);
-                i -= 1;
-            }
-            c.infoAlumnoTable_ins(ipago, Integer.parseInt(nocontrol), per);
-            c.infoAbonoTable_ins(iAbono, Integer.parseInt(nocontrol), per);
+            this.dispose();         
         }
+        
 
     }//GEN-LAST:event_btnAbonarActionPerformed
+
+    private void btnEliminarInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarInsActionPerformed
+        try {
+            nocontrol = m.getNocontrol();
+            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar esta deuda? se eliminaran todas las referencias vinculadas", "Atención", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                c.eliminarIns(Integer.parseInt(nocontrol), per);          
+                this.dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna deuda", "Error", 0);
+        }
+    }//GEN-LAST:event_btnEliminarInsActionPerformed
+
+    private void btnEliminarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAbonoActionPerformed
+        try {
+            nocontrol = m.getNocontrol();
+            ref = (String.valueOf(iAbono.getValueAt(tblAbonos.getSelectedRow(), 2)));
+            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este abono? se agregará lo abonado a su deuda", "Atención", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                c.eliminarInsAbono(ref, Integer.parseInt(nocontrol));          
+                this.dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningun abono", "Error", 0);
+        }
+    }//GEN-LAST:event_btnEliminarAbonoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbonar;
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnEliminarAbono;
+    private javax.swing.JButton btnEliminarIns;
     private javax.swing.JComboBox<String> cbPeriodos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblSaldo;
     private javax.swing.JLabel lblnocontrol;
     private javax.swing.JTable tblAbonos;
     private javax.swing.JTable tblMeses;

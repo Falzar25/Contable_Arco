@@ -108,6 +108,7 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Extraordinarios");
+        setPreferredSize(new java.awt.Dimension(750, 500));
 
         tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -189,7 +190,7 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
                     .addComponent(jButton2)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)

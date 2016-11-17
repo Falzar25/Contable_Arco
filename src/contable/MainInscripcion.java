@@ -98,6 +98,7 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Inscripciones y Preinscripciones");
+        setPreferredSize(new java.awt.Dimension(750, 500));
 
         jLabel2.setText("Periodo:");
 

@@ -32,6 +32,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
         m = (DefaultTableModel) tblAll.getModel();
         con.conectar();
         cbMes.removeAllItems();
+        con.añosCB(cbYear);
         for (String a : array_meses) {
             cbMes.addItem(a);
         }
@@ -63,9 +64,9 @@ public class AsignarPagosM extends javax.swing.JDialog {
         cbMes = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        lblYear = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        cbYear = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Asignar Pagos");
@@ -123,9 +124,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
 
         jLabel3.setText("Seleccione el mes:");
 
-        jLabel4.setText("El año del pago será: ");
-
-        lblYear.setText("2016");
+        jLabel4.setText("Seleccione el año:");
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -153,8 +152,8 @@ public class AsignarPagosM extends javax.swing.JDialog {
                             .addComponent(rbLista)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblYear))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(rbAlumno)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -196,8 +195,8 @@ public class AsignarPagosM extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(lblYear))
-                .addGap(4, 4, 4)
+                    .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
                 .addComponent(rbAlumno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,7 +206,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
                 .addComponent(rbLista)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -240,7 +239,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
         try {
             cantidad = Integer.parseInt(txtCantidad.getText());
             mes = cbMes.getSelectedItem().toString();
-            year = Integer.parseInt(lblYear.getText());
+            year = Integer.parseInt(cbYear.getSelectedItem().toString());
             if (rbAlumno.isSelected()) {
 
                 con.AsignarPagosM_Alumno(Integer.parseInt(txtNC.getText()), cantidad, mes, year);
@@ -269,6 +268,7 @@ public class AsignarPagosM extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbMes;
+    private javax.swing.JComboBox<String> cbYear;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -276,7 +276,6 @@ public class AsignarPagosM extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblYear;
     private javax.swing.JRadioButton rbAlumno;
     private javax.swing.JRadioButton rbLista;
     private javax.swing.JTable tblAll;

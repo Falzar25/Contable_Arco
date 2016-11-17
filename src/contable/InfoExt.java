@@ -20,7 +20,7 @@ public class InfoExt extends javax.swing.JDialog {
     /**
      * Creates new form InfoExt
      */
-    String nocontrol, nombre, saldo, per;
+    String nocontrol, nombre, saldo, per, ref;
     DefaultTableModel mpago, mAbono;
     Model m = new Model();
     Conexion c = new Conexion();
@@ -86,6 +86,8 @@ public class InfoExt extends javax.swing.JDialog {
         btnBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnAbonar = new javax.swing.JButton();
+        btnEliminarDeuda = new javax.swing.JButton();
+        btnEliminarAbono = new javax.swing.JButton();
 
         setTitle("Informacion del alumno en extraordinarios");
 
@@ -155,6 +157,20 @@ public class InfoExt extends javax.swing.JDialog {
             }
         });
 
+        btnEliminarDeuda.setText("Eliminar");
+        btnEliminarDeuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarDeudaActionPerformed(evt);
+            }
+        });
+
+        btnEliminarAbono.setText("Eliminar");
+        btnEliminarAbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAbonoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,8 +179,8 @@ public class InfoExt extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
@@ -177,20 +193,28 @@ public class InfoExt extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblSaldo))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                .addComponent(lblSaldo)
+                                .addGap(0, 20, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEliminarDeuda)
+                            .addComponent(btnEliminarAbono)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(btnAbonar)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnBack)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(103, 103, 103)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(151, 151, 151)
+                                .addComponent(btnAbonar)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnBack)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,19 +234,30 @@ public class InfoExt extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(lblSaldo))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cbPeriodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(btnEliminarDeuda)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(btnEliminarAbono)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAbonar)
                     .addComponent(btnBack))
-                .addGap(2, 2, 2))
+                .addContainerGap())
         );
 
         pack();
@@ -237,23 +272,45 @@ public class InfoExt extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "¡Este alumno ya no debe ningun pago!", "Error", 0);
         } else {
             new AbonarExt(null, true).setVisible(true);
-            for (int i = 0; i < tblMeses.getRowCount(); i++) {
-                mpago.removeRow(i);
-                i -= 1;
-            }
-            for (int i = 0; i < tblAbonos.getRowCount(); i++) {
-                mAbono.removeRow(i);
-                i -= 1;
-            }
-            c.infoAlumnoTable_ext(mpago, Integer.parseInt(nocontrol), per);
-            c.infoAbonoTable_ext(mAbono, Integer.parseInt(nocontrol), per);
+            this.dispose();
         }
     }//GEN-LAST:event_btnAbonarActionPerformed
+
+    private void btnEliminarDeudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDeudaActionPerformed
+        try {
+
+            nocontrol = m.getNocontrol();
+            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar esta deuda? se eliminaran todas las referencias vinculadas", "Atención", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                c.eliminarExt(Integer.parseInt(nocontrol), per);          
+                this.dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna deuda", "Error", 0);
+        }
+    }//GEN-LAST:event_btnEliminarDeudaActionPerformed
+
+    private void btnEliminarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAbonoActionPerformed
+        try {
+
+            nocontrol = m.getNocontrol();
+            ref = (String.valueOf(mAbono.getValueAt(tblAbonos.getSelectedRow(), 2)));
+            int n = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este abono? se agregará lo abonado a su deuda", "Atención", JOptionPane.YES_NO_OPTION);
+            if (n == 0) {
+                c.eliminarExtAbono(ref, Integer.parseInt(nocontrol));          
+                this.dispose();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningun abono", "Error", 0);
+        }
+    }//GEN-LAST:event_btnEliminarAbonoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbonar;
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnEliminarAbono;
+    private javax.swing.JButton btnEliminarDeuda;
     private javax.swing.JComboBox<String> cbPeriodos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

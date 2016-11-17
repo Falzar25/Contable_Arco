@@ -67,6 +67,7 @@ public class VerAlumnos extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Todos los Alumnos");
+        setPreferredSize(new java.awt.Dimension(750, 500));
 
         jLabel1.setText("Buscar:");
 

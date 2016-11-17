@@ -5,9 +5,13 @@
  */
 package contable;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import sql.Conexion;
 
@@ -17,24 +21,37 @@ import sql.Conexion;
  */
 public class Main extends javax.swing.JFrame {
 
+    private Image imagen;
     Conexion con = new Conexion();
     Model m = new Model();
-
+    
     public Main() {
         initComponents();
         setLocationRelativeTo(null);
         con.conectar();
         con.periodoActual();
+        
+        
     }
-   
-    
     public static int count = 0;
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        desktopPane = new javax.swing.JDesktopPane();
+        desktopPane = new javax.swing.JDesktopPane(){
+            ImageIcon icon = new ImageIcon("ceuarkos.jpg");
+            Image image = icon.getImage();
+
+            Image newimage = image.getScaledInstance(1000, 640, Image.SCALE_SMOOTH);
+
+            @Override
+            protected void paintComponent(Graphics g)
+            {
+                super.paintComponent(g);
+                g.drawImage(newimage, 0, 0, this);
+            }
+        };
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -52,7 +69,7 @@ public class Main extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Contable");
 
-        desktopPane.setBackground(new java.awt.Color(0, 51, 51));
+        desktopPane.setBackground(new java.awt.Color(255, 255, 255));
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Alumno");
@@ -143,26 +160,26 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        new Agregar_Alumnos(null, true).setVisible(true);        
+        new Agregar_Alumnos(null, true).setVisible(true);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
         VerAlumnos ver_alumnos = VerAlumnos.getInstance();
-        
+
         desktopPane.remove(ver_alumnos);
         desktopPane.add(ver_alumnos);
-        
+
         ver_alumnos.setVisible(true);
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
@@ -181,14 +198,14 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        MainInscripcion mainInscricion =  MainInscripcion.getInstance();
+        MainInscripcion mainInscricion = MainInscripcion.getInstance();
         desktopPane.remove(mainInscricion);
         desktopPane.add(mainInscricion);
         mainInscricion.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new ActivarPeriodo(null, true).setVisible(true);        
+        new ActivarPeriodo(null, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -198,7 +215,7 @@ public class Main extends javax.swing.JFrame {
             if (valor <= 2010) {
                 JOptionPane.showMessageDialog(this, "Por favor ingrese un valor mayor que 2010");
             } else {
-                
+
                 int n = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas asignar ese valor?", "Atención", JOptionPane.YES_NO_OPTION);
                 if (n == 0) {
                     con.agregarYear(valor);
@@ -208,7 +225,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor ingrese un valor correcto");
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-    
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -225,7 +242,7 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }        
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);

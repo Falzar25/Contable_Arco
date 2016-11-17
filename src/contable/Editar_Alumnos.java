@@ -23,6 +23,7 @@ public class Editar_Alumnos extends javax.swing.JDialog {
     public Editar_Alumnos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
         Model m = new Model();
         exnc = Integer.parseInt(m.getNocontrol());
         exname = m.getNombreAlumno();

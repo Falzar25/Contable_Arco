@@ -83,6 +83,8 @@ public class MainMensualidades extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Pagos mensuales");
+        setPreferredSize(new java.awt.Dimension(750, 500));
+        setVerifyInputWhenFocusTarget(false);
 
         jLabel1.setText("Buscar:");
 
