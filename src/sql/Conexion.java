@@ -39,7 +39,7 @@ public class Conexion {
 
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost/abonos?"
-                    + "user=root&password=p4j4r0_c4rp1nt3r0");
+                    + "user=root&password=Falzar250");
 
         } catch (SQLException ex) {
 
@@ -467,7 +467,22 @@ public class Conexion {
 
         }
     }
+    public void descripcionPeriodo(String s) {
 
+        try {
+            cmd = con.createStatement();
+            rs = cmd.executeQuery("select idperiodo from tbl_periodos where descripcion = '"+s+"'");
+            rs.next();
+            Model m = new Model();
+            m.setPeriodo(rs.getInt("idperiodo"));
+            rs.close();
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, ex, "Error", 0);
+
+        }
+    }
     public void asignarExt(ArrayList arr) {
 
         try {

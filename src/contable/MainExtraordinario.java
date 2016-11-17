@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import reports.CrearReportes;
 import sql.Conexion;
 
 /**
@@ -23,8 +24,8 @@ import sql.Conexion;
  */
 public class MainExtraordinario extends javax.swing.JInternalFrame {
 
-    public static MainExtraordinario instance =  null;
-    
+    public static MainExtraordinario instance = null;
+
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
@@ -69,7 +70,7 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         });
 
     }
-    
+
     public static MainExtraordinario getInstance() {
         if (instance == null) {
             instance = new MainExtraordinario();
@@ -100,6 +101,7 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -143,27 +145,39 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton4.setText("Crear Reporte");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(265, 265, 265)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(49, 49, 49)
-                .addComponent(jButton3)
-                .addGap(240, 240, 240))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(265, 265, 265)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(172, 172, 172)
+                                .addComponent(jButton1)
+                                .addGap(45, 45, 45)
+                                .addComponent(jButton3)
+                                .addGap(45, 45, 45)
+                                .addComponent(jButton4)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,11 +189,12 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
                     .addComponent(jButton2)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
                 .addGap(25, 25, 25))
         );
 
@@ -211,11 +226,25 @@ public class MainExtraordinario extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            CrearReportes crm = new CrearReportes();
+            con.descripcionPeriodo(periodo);
+            crm.crearReporteExt(m.getPeriodo(), periodo);
+            JOptionPane.showMessageDialog(null, "Se ha creado el reporte correctamente", "Correcto", 1);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al crear el reporte");
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbPeriodo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAlumnos;

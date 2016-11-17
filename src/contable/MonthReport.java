@@ -5,7 +5,8 @@
  */
 package contable;
 
-import reports.CrearReporteMensual;
+import javax.swing.JOptionPane;
+import reports.CrearReportes;
 import sql.Conexion;
 
 /**
@@ -13,21 +14,21 @@ import sql.Conexion;
  * @author Equipo
  */
 public class MonthReport extends javax.swing.JDialog {
+
     Conexion con = new Conexion();
-    
+
     public MonthReport(java.awt.Frame parent, boolean modal) {
- //   public MonthReport() {
-        
-super(parent, modal);
+        //   public MonthReport() {
+
+        super(parent, modal);
         initComponents();
-                setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);
 
         con.conectar();
         con.todosLosMeses(cbMes);
         con.añosCB(cbYear);
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -90,8 +91,15 @@ super(parent, modal);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        CrearReporteMensual crm = new CrearReporteMensual();
-        crm.crearReporte(cbMes.getSelectedItem().toString());
+        try {
+            CrearReportes crm = new CrearReportes();
+            crm.crearReporteMensual(cbYear.getSelectedItem().toString(), cbMes.getSelectedItem().toString());
+            JOptionPane.showMessageDialog(null, "Se ha creado el reporte correctamente", "Correcto", 1);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al crear el reporte");
+        }
+
     }//GEN-LAST:event_btnCrearActionPerformed
 
 

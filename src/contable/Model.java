@@ -17,6 +17,16 @@ public class Model {
     private static int semestre;
     private static int year;
     private static String month;
+    private static int periodo;
+
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+    
 
     public String getMonth() {
         return month;

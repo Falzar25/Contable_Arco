@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import reports.CrearReporteMensual;
+import reports.CrearReportes;
 import sql.Conexion;
 
 public class MainMensualidades extends javax.swing.JInternalFrame {
@@ -198,8 +198,7 @@ public class MainMensualidades extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPutSaldoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CrearReporteMensual crm = new CrearReporteMensual();
-        //Aqui van reportes 
+        new MonthReport(new Main(), true).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /*

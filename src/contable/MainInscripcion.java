@@ -5,15 +5,16 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import reports.CrearReportes;
 import sql.Conexion;
-
 
 public class MainInscripcion extends javax.swing.JInternalFrame {
 
     public static MainInscripcion instance = null;
-    
+
     Conexion con = new Conexion();
     Model m = new Model();
     DefaultTableModel model;
@@ -58,7 +59,7 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
             }
         });
     }
-    
+
     public static MainInscripcion getInstance() {
         if (instance == null) {
             instance = new MainInscripcion();
@@ -172,9 +173,9 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                         .addGap(137, 137, 137)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(214, 214, 214)
+                .addGap(167, 167, 167)
                 .addComponent(btnPutSaldo)
-                .addGap(74, 74, 74)
+                .addGap(122, 122, 122)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -193,16 +194,26 @@ public class MainInscripcion extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2))
                 .addGap(7, 7, 7)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPutSaldo)
-                    .addComponent(jButton1)))
+                    .addComponent(jButton1)
+                    .addComponent(btnPutSaldo))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            CrearReportes crm = new CrearReportes();
+            con.descripcionPeriodo(periodo);
+            crm.crearReporteIns(m.getPeriodo(), periodo);
+            JOptionPane.showMessageDialog(null, "Se ha creado el reporte correctamente", "Correcto", 1);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al crear el reporte");
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
